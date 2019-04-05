@@ -1,5 +1,8 @@
 # dash-daq-app-template
 
+fix dash-daq link
+
+
 ## Introduction
 `dash-daq-app-template` is a repository created to serve as a guideline of what a Dash-DAQ app's repository should look like.
 
