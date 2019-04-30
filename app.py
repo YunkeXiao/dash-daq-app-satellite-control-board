@@ -550,7 +550,7 @@ root_layout = html.Div(
     children=[
         dcc.Store(id='store-placeholder'),
         dcc.Store(id='store-data', data={
-            'hour_data':{
+            'hour_data': {
                 'elevation': [df_non_gps_h['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h['speed'][i] for i in range(0, 60)],
@@ -559,7 +559,7 @@ root_layout = html.Div(
                 'fuel': [df_non_gps_h['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h['battery'][i] for i in range(0, 60)],
             },
-            'minute_data':{
+            'minute_data': {
                 'elevation': [df_non_gps_m['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m['speed'][i] for i in range(0, 60)],
@@ -568,7 +568,7 @@ root_layout = html.Div(
                 'fuel': [df_non_gps_m['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_m['battery'][i] for i in range(0, 60)],
             },
-            'hour_data_0':{
+            'hour_data_0': {
                 'elevation': [df_non_gps_h_0['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h_0['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h_0['speed'][i] for i in range(0, 60)],
@@ -577,7 +577,7 @@ root_layout = html.Div(
                 'fuel': [df_non_gps_h_0['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h_0['battery'][i] for i in range(0, 60)],
             },
-            'minute_data_0':{
+            'minute_data_0': {
                 'elevation': [df_non_gps_m_0['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m_0['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m_0['speed'][i] for i in range(0, 60)],
@@ -586,7 +586,7 @@ root_layout = html.Div(
                 'fuel': [df_non_gps_m_0['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_m_0['battery'][i] for i in range(0, 60)],
             },
-            'hour_data_1':{
+            'hour_data_1': {
                 'elevation': [df_non_gps_h_1['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h_1['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h_1['speed'][i] for i in range(0, 60)],
@@ -595,7 +595,7 @@ root_layout = html.Div(
                 'fuel': [df_non_gps_h_1['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h_1['battery'][i] for i in range(0, 60)],
             },
-            'minute_data_1':{
+            'minute_data_1': {
                 'elevation': [df_non_gps_m_1['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m_1['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m_1['speed'][i] for i in range(0, 60)],
@@ -606,17 +606,22 @@ root_layout = html.Div(
             }
 
         }),
-        dcc.Store(id='store-data-type', data=''),
+        # For the case no components were clicked, we need to know what type of graph to preserve
+        dcc.Store(id='store-data-config', data={
+            'data_type': None,
+            'satellite_type': '',
+        }),
+        # Check which graph should be displayed
         dcc.Store(id='store-previous-states', data={
-                'elevation': 0,
-                'temperature': 0,
-                'speed': 0,
-                'latitude': 0,
-                'longitude': 0,
-                'fuel': 0,
-                'battery': 0,
-            }
-        ),
+            'elevation': 0,
+            'temperature': 0,
+            'speed': 0,
+            'latitude': 0,
+            'longitude': 0,
+            'fuel': 0,
+            'battery': 0,
+        }
+                  ),
         side_panel_layout,
         main_panel_layout
     ]
@@ -624,179 +629,58 @@ root_layout = html.Div(
 
 app.layout = root_layout
 
+
 ##############################################################################################################
 # Callbacks Data
 ##############################################################################################################
 
-# Check which graph should be displayed
-previous_states = {
-    'elevation': 0,
-    'temperature': 0,
-    'speed': 0,
-    'latitude': 0,
-    'longitude': 0,
-    'fuel': 0,
-    'battery': 0,
-}
-
-# For the case no components were clicked, we need to know what type of graph to preserve
-data_type = ""
-
-# Pandas
-df_non_gps_h = pd.read_csv('./data/non_gps_data_h.csv')
-df_non_gps_m = pd.read_csv('./data/non_gps_data_m.csv')
-df_gps_m = pd.read_csv('./data/gps_data_m.csv')
-df_gps_h = pd.read_csv('./data/gps_data_h.csv')
-
-# Satellite H45-K1 data
-df_non_gps_h_0 = pd.read_csv('./data/non_gps_data_h_0.csv')
-df_non_gps_m_0 = pd.read_csv('./data/non_gps_data_m_0.csv')
-df_gps_m_0 = pd.read_csv('./data/gps_data_m_0.csv')
-df_gps_h_0 = pd.read_csv('./data/gps_data_h_0.csv')
-
-# Satellite L12-5 data
-df_non_gps_h_1 = pd.read_csv('./data/non_gps_data_h_1.csv')
-df_non_gps_m_1 = pd.read_csv('./data/non_gps_data_m_1.csv')
-df_gps_m_1 = pd.read_csv('./data/gps_data_m_1.csv')
-df_gps_h_1 = pd.read_csv('./data/gps_data_h_1.csv')
-
-# Used for the hour mode graph data
-hour_data = {
-    'elevation': [df_non_gps_h['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_h['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_h['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_h['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_h['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_h['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_h['battery'][i] for i in range(0, 60)],
-}
-
-# Used for the minute mode graph data
-minute_data = {
-    'elevation': [df_non_gps_m['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_m['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_m['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_m['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_m['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_m['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_m['battery'][i] for i in range(0, 60)],
-}
-
-# Satellite H45-L1 data
-hour_data_0 = {
-    'elevation': [df_non_gps_h_0['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_h_0['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_h_0['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_h_0['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_h_0['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_h_0['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_h_0['battery'][i] for i in range(0, 60)],
-}
-
-minute_data_0 = {
-    'elevation': [df_non_gps_m_0['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_m_0['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_m_0['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_m_0['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_m_0['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_m_0['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_m_0['battery'][i] for i in range(0, 60)],
-}
-
-# Satellite L12-5 data
-hour_data_1 = {
-    'elevation': [df_non_gps_h_1['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_h_1['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_h_1['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_h_1['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_h_1['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_h_1['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_h_1['battery'][i] for i in range(0, 60)],
-}
-
-minute_data_1 = {
-    'elevation': [df_non_gps_m_1['elevation'][i] for i in range(0, 60)],
-    'temperature': [df_non_gps_m_1['temperature'][i] for i in range(0, 60)],
-    'speed': [df_non_gps_m_1['speed'][i] for i in range(0, 60)],
-    'latitude': ["{0:09.4f}".format(df_gps_m_1['lat'][i]) for i in range(0, 60)],
-    'longitude': ["{0:09.4f}".format(df_gps_m_1['lon'][i]) for i in range(0, 60)],
-    'fuel': [df_non_gps_m_1['fuel'][i] for i in range(0, 60)],
-    'battery': [df_non_gps_m_1['battery'][i] for i in range(0, 60)],
-}
-
-
 # Add new data every second/minute
 @app.callback(
-    Output(component_id='store-placeholder', component_property='data'),
-    [Input(component_id='interval', component_property='n_intervals')]
+    Output('store-data', 'data'),
+    [Input('interval', 'n_intervals')],
+    [State('store-data', 'data')]
 )
-def update_data(interval):
-    # Update H45-K1 data
-    minute_data_0['elevation'].append(minute_data_0['elevation'][0])
-    minute_data_0['elevation'] = minute_data_0['elevation'][1:61]
-    minute_data_0['temperature'].append(minute_data_0['temperature'][0])
-    minute_data_0['temperature'] = minute_data_0['temperature'][1:61]
-    minute_data_0['speed'].append(minute_data_0['speed'][0])
-    minute_data_0['speed'] = minute_data_0['speed'][1:61]
-    # Latitude and longitude minute and hour data are really the same
-    minute_data_0['latitude'].append("{0:09.4f}".format(df_gps_m_0['lat'][60 + interval % 3600]))
-    minute_data_0['latitude'] = minute_data_0['latitude'][1:61]
-    minute_data_0['longitude'].append("{0:09.4f}".format(df_gps_m_0['lon'][60 + interval % 3600]))
-    minute_data_0['longitude'] = minute_data_0['longitude'][1:61]
-    minute_data_0['fuel'].append(minute_data_0['fuel'][0])
-    minute_data_0['fuel'] = minute_data_0['fuel'][1:61]
-    minute_data_0['battery'].append(minute_data_0['battery'][0])
-    minute_data_0['battery'] = minute_data_0['battery'][1:61]
+def update_data(interval, data):
+    new_data = data
+    # Update H45-K1 data when sat==0, update L12-5 data when sat==1
+    for sat in range(2):
+        new_data['minute_data_' + str(sat)]['elevation'].append(data['minute_data_' + str(sat)]['elevation'][0])
+        new_data['minute_data_' + str(sat)]['elevation'] = new_data['minute_data_' + str(sat)]['elevation'][1:61]
+        new_data['minute_data_' + str(sat)]['temperature'].append(data['minute_data_' + str(sat)]['temperature'][0])
+        new_data['minute_data_' + str(sat)]['temperature'] = new_data['minute_data_' + str(sat)]['temperature'][1:61]
+        new_data['minute_data_' + str(sat)]['speed'].append(data['minute_data_' + str(sat)]['speed'][0])
+        new_data['minute_data_' + str(sat)]['speed'] = new_data['minute_data_' + str(sat)]['speed'][1:61]
+        # Latitude and longitude minute and hour data are really the same
+        new_data['minute_data_' + str(sat)]['latitude'].append(
+            "{0:09.4f}".format(df_gps_m_0['lat'][60 + interval % 3600]))
+        new_data['minute_data_' + str(sat)]['latitude'] = new_data['minute_data_' + str(sat)]['latitude'][1:61]
+        new_data['minute_data_' + str(sat)]['longitude'].append(
+            "{0:09.4f}".format(df_gps_m_0['lon'][60 + interval % 3600]))
+        new_data['minute_data_' + str(sat)]['longitude'] = new_data['minute_data_' + str(sat)]['longitude'][1:61]
+        new_data['minute_data_' + str(sat)]['fuel'].append(data['minute_data_' + str(sat)]['fuel'][0])
+        new_data['minute_data_' + str(sat)]['fuel'] = new_data['minute_data_' + str(sat)]['fuel'][1:61]
+        new_data['minute_data_' + str(sat)]['battery'].append(data['minute_data_' + str(sat)]['battery'][0])
+        new_data['minute_data_' + str(sat)]['battery'] = new_data['minute_data_0']['battery'][1:61]
 
-    if interval % 60000 == 0:
-        hour_data_0['elevation'].append(hour_data_0['elevation'][0])
-        hour_data_0['elevation'] = hour_data_0['elevation'][1:61]
-        hour_data_0['temperature'].append(hour_data_0['temperature'][0])
-        hour_data_0['temperature'] = hour_data_0['temperature'][1:61]
-        hour_data_0['speed'].append(hour_data_0['speed'][0])
-        hour_data_0['speed'] = hour_data_0['speed'][1:61]
-        hour_data_0['latitude'].append("{0:09.4f}".format(df_gps_h_0['lat'][(interval//60000) % 60]))
-        hour_data_0['latitude'] = hour_data_0['latitude'][1:61]
-        hour_data_0['longitude'].append("{0:09.4f}".format(df_gps_h_0['lon'][(interval//60000) % 60]))
-        hour_data_0['longitude'] = hour_data_0['longitude'][1:61]
-        hour_data_0['fuel'].append(hour_data_0['fuel'][0])
-        hour_data_0['fuel'] = hour_data_0['fuel'][1:61]
-        hour_data_0['battery'].append(hour_data_0['battery'][0])
-        hour_data_0['battery'] = hour_data_0['battery']
+        if interval % 60000 == 0:
+            new_data['hour_data_' + str(sat)]['elevation'].append(data['hour_data_' + str(sat)]['elevation'][0])
+            new_data['hour_data_' + str(sat)]['elevation'] = new_data['hour_data_' + str(sat)]['elevation'][1:61]
+            new_data['hour_data_' + str(sat)]['temperature'].append(data['hour_data_' + str(sat)]['temperature'][0])
+            new_data['hour_data_' + str(sat)]['temperature'] = new_data['hour_data_' + str(sat)]['temperature'][1:61]
+            new_data['hour_data_' + str(sat)]['speed'].append(data['hour_data_' + str(sat)]['speed'][0])
+            new_data['hour_data_' + str(sat)]['speed'] = new_data['hour_data_' + str(sat)]['speed'][1:61]
+            new_data['hour_data_' + str(sat)]['latitude'].append(
+                "{0:09.4f}".format(df_gps_h_0['lat'][(interval // 60000) % 60]))
+            new_data['hour_data_' + str(sat)]['latitude'] = new_data['hour_data_' + str(sat)]['latitude'][1:61]
+            new_data['hour_data_' + str(sat)]['longitude'].append(
+                "{0:09.4f}".format(df_gps_h_0['lon'][(interval // 60000) % 60]))
+            new_data['hour_data_' + str(sat)]['longitude'] = new_data['hour_data_' + str(sat)]['longitude'][1:61]
+            new_data['hour_data_' + str(sat)]['fuel'].append(data['hour_data_' + str(sat)]['fuel'][0])
+            new_data['hour_data_' + str(sat)]['fuel'] = new_data['hour_data_' + str(sat)]['fuel'][1:61]
+            new_data['hour_data_' + str(sat)]['battery'].append(data['hour_data_' + str(sat)]['battery'][0])
+            new_data['hour_data_' + str(sat)]['battery'] = new_data['hour_data_' + str(sat)]['battery']
 
-    # Update L12-5 data
-    minute_data_1['elevation'].append(minute_data_1['elevation'][0])
-    minute_data_1['elevation'] = minute_data_1['elevation'][1:61]
-    minute_data_1['temperature'].append(minute_data_1['temperature'][0])
-    minute_data_1['temperature'] = minute_data_1['temperature'][1:61]
-    minute_data_1['speed'].append(minute_data_1['speed'][0])
-    minute_data_1['speed'] = minute_data_1['speed'][1:61]
-    # Latitude and longitude minute and hour data are really the same
-    minute_data_1['latitude'].append("{0:09.4f}".format(df_gps_m_1['lat'][60 + interval % 3600]))
-    minute_data_1['latitude'] = minute_data_1['latitude'][1:61]
-    minute_data_1['longitude'].append("{0:09.4f}".format(df_gps_m_1['lon'][60 + interval % 3600]))
-    minute_data_1['longitude'] = minute_data_1['longitude'][1:61]
-    minute_data_1['fuel'].append(minute_data_1['fuel'][0])
-    minute_data_1['fuel'] = minute_data_1['fuel'][1:61]
-    minute_data_1['battery'].append(minute_data_1['battery'][0])
-    minute_data_1['battery'] = minute_data_1['battery'][1:61]
-
-    if interval % 60000 == 0:
-        hour_data_1['elevation'].append(hour_data_1['elevation'][0])
-        hour_data_1['elevation'] = hour_data_1['elevation'][1:61]
-        hour_data_1['temperature'].append(hour_data_1['temperature'][0])
-        hour_data_1['temperature'] = hour_data_1['temperature'][1:61]
-        hour_data_1['speed'].append(hour_data_1['speed'][0])
-        hour_data_1['speed'] = hour_data_1['speed'][1:61]
-        hour_data_1['latitude'].append("{0:09.4f}".format(df_gps_h_1['lat'][interval % 60000]))
-        hour_data_1['latitude'] = hour_data_1['latitude'][1:61]
-        hour_data_1['longitude'].append("{0:09.4f}".format(df_gps_h_1['lon'][interval % 60000]))
-        hour_data_1['longitude'] = hour_data_1['longitude'][1:61]
-        hour_data_1['fuel'].append(hour_data_1['fuel'][0])
-        hour_data_1['fuel'] = hour_data_1['fuel'][1:61]
-        hour_data_1['battery'].append(hour_data_1['battery'][0])
-        hour_data_1['battery'] = hour_data_1['battery']
-    return [0]
+    return new_data
 
 
 ##############################################################################################################
@@ -805,22 +689,37 @@ def update_data(interval):
 
 # Update the graph
 @app.callback(
-    Output(component_id='graph-panel', component_property='figure'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='control-panel-toggle-minute', component_property='value'),
-     Input(component_id='control-panel-elevation', component_property='n_clicks'),
-     Input(component_id='control-panel-temperature', component_property='n_clicks'),
-     Input(component_id='control-panel-speed', component_property='n_clicks'),
-     Input(component_id='control-panel-latitude', component_property='n_clicks'),
-     Input(component_id='control-panel-longitude', component_property='n_clicks'),
-     Input(component_id='control-panel-fuel', component_property='n_clicks'),
-     Input(component_id='control-panel-battery', component_property='n_clicks'),
-     ]
+    [Output('graph-panel', 'figure'), Output('store-previous-states', 'data'), Output('store-data-config', 'data')],
+    [Input('interval', 'n_intervals'),
+     Input('satellite-dropdown-component', 'value'),
+     Input('control-panel-toggle-minute', 'value'),
+     Input('control-panel-elevation', 'n_clicks'),
+     Input('control-panel-temperature', 'n_clicks'),
+     Input('control-panel-speed', 'n_clicks'),
+     Input('control-panel-latitude', 'n_clicks'),
+     Input('control-panel-longitude', 'n_clicks'),
+     Input('control-panel-fuel', 'n_clicks'),
+     Input('control-panel-battery', 'n_clicks')],
+    [State('store-data', 'data'),
+     State('store-previous-states', 'data'),
+     State('store-data-config', 'data')]
 )
-def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks, speed_n_clicks, latitude_n_clicks,
-                 longitude_n_clicks, fuel_n_clicks, battery_n_clicks):
+def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temperature_n_clicks, speed_n_clicks,
+                 latitude_n_clicks, longitude_n_clicks, fuel_n_clicks, battery_n_clicks, data, previous_states,
+                 data_config):
+
     # Used to check stuff
-    global data_type
+    new_data_config = data_config
+    data_type = data_config['data_type']
+    new_states = previous_states
+
+    # Update store-data-config['satellite_type']
+    if satellite_type == 'h45-k1':
+        new_data_config['satellite_type'] = 0
+    elif satellite_type == 'l12-5':
+        new_data_config['satellite_type'] = 1
+    else:
+        new_data_config['satellite_type'] = None
 
     # Decide the range of Y given if minute_mode is on
     def set_y_range(type):
@@ -904,28 +803,20 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
 
     # Function to update values
     def update_graph_data(type):
-        global data_type
-        data_type = type
-        if minute_mode:
-            figure['data'][0]['y'] = list(reversed(minute_data[type]))
-        else:
-            figure['data'][0]['y'] = list(reversed(hour_data[type]))
+        string_buffer = ''
+        if data_config['satellite_type'] == 0:
+            string_buffer = '_0'
+        elif data_config['satellite_type'] == 1:
+            string_buffer = '_1'
 
-        # Title and scale differs
-        if type == 'elevation':
-            figure['layout']['title'] = 'Elevation Histogram'
-        elif type == 'temperature':
-            figure['layout']['title'] = 'Temperature Histogram'
-        elif type == 'speed':
-            figure['layout']['title'] = 'Speed Histogram'
-        elif type == 'latitude':
-            figure['layout']['title'] = 'Latitude Histogram'
-        elif type == 'longitude':
-            figure['layout']['title'] = 'Longitude Histogram'
-        elif type == 'fuel':
-            figure['layout']['title'] = 'Fuel Histogram'
-        elif type == 'battery':
-            figure['layout']['title'] = 'Battery Histogram'
+        if minute_mode:
+            figure['data'][0]['y'] = list(reversed(data['minute_data' + string_buffer][type]))
+        else:
+            figure['data'][0]['y'] = list(reversed(data['hour_data' + string_buffer][type]))
+
+        # Graph title changes depending on graphed data
+        figure['layout']['title'] = type.capitalize() + ' Histogram'
+        return type
 
     # A default figure option to base off everything else from
     figure = {
@@ -964,48 +855,50 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
 
     # First pass checks if a component has been selected
     if elevation_n_clicks != previous_states['elevation']:
-        previous_states['elevation'] += 1
+        new_states['elevation'] += 1
         set_y_range('elevation')
-        update_graph_data('elevation')
+        data_type = update_graph_data('elevation')
 
     elif temperature_n_clicks != previous_states['temperature']:
-        previous_states['temperature'] += 1
+        new_states['temperature'] += 1
         set_y_range('temperature')
-        update_graph_data('temperature')
+        data_type = update_graph_data('temperature')
 
     elif speed_n_clicks != previous_states['speed']:
-        previous_states['speed'] += 1
+        new_states['speed'] += 1
         set_y_range('speed')
-        update_graph_data('speed')
+        data_type = update_graph_data('speed')
 
     elif latitude_n_clicks != previous_states['latitude']:
-        previous_states['latitude'] += 1
-        update_graph_data('latitude')
+        new_states['latitude'] += 1
         set_y_range('latitude')
+        data_type = update_graph_data('latitude')
 
     elif longitude_n_clicks != previous_states['longitude']:
-        previous_states['longitude'] += 1
+        new_states['longitude'] += 1
         set_y_range('longitude')
-        update_graph_data('longitude')
+        data_type = update_graph_data('longitude')
 
     elif fuel_n_clicks != previous_states['fuel']:
-        previous_states['fuel'] += 1
+        new_states['fuel'] += 1
         set_y_range('fuel')
-        update_graph_data('fuel')
+        data_type = update_graph_data('fuel')
 
     elif battery_n_clicks != previous_states['battery']:
-        previous_states['battery'] += 1
+        new_states['battery'] += 1
         set_y_range('battery')
-        update_graph_data('battery')
+        data_type = update_graph_data('battery')
 
     # If no component has been selected, check for most recent data_type, to prevent graph from always resetting
     else:
-        if data_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
+        if type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
             set_y_range(data_type)
-            update_graph_data(data_type)
+            update_graph_data(type)
         else:
-            return figure
-    return figure
+            return [figure, new_states, new_data_config]
+    # Update store-data-config['data_type']
+    new_data_config['data_type'] = data_type
+    return [figure, new_states, new_data_config]
 
 
 ##############################################################################################################
@@ -1013,49 +906,8 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
 ##############################################################################################################
 
 @app.callback(
-    Output(component_id='satellite-dropdown-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals')],
-    [State(component_id='satellite-dropdown-component', component_property='value')]
-)
-def update_dropdown(clicks, value):
-    global df_non_gps_h
-    global df_non_gps_m
-    global df_gps_h
-    global df_gps_m
-    global df_non_gps_h_0
-    global df_non_gps_m_0
-    global df_gps_h_0
-    global df_gps_m_0
-    global df_non_gps_h_1
-    global df_non_gps_m_1
-    global df_gps_h_1
-    global df_gps_m_1
-    global minute_data
-    global minute_data_0
-    global minute_data_1
-    global hour_data
-    global hour_data_0
-    global hour_data_1
-    if value == 'h45-k1':
-        df_non_gps_h = df_non_gps_h_0
-        df_non_gps_m = df_non_gps_m_0
-        df_gps_h = df_gps_h_0
-        df_gps_m = df_gps_m_0
-        minute_data = minute_data_0
-        hour_data = hour_data_0
-    if value == 'l12-5':
-        df_non_gps_h = df_non_gps_h_1
-        df_non_gps_m = df_non_gps_m_1
-        df_gps_h = df_gps_h_1
-        df_gps_m = df_gps_m_1
-        minute_data = minute_data_1
-        hour_data = hour_data_1
-    return value
-
-
-@app.callback(
-    Output(component_id='satellite-name', component_property='children'),
-    [Input(component_id='satellite-dropdown-component', component_property='value')]
+    Output('satellite-name', 'children'),
+    [Input('satellite-dropdown-component', 'value')]
 )
 def update_satellite_name(val):
     if val == 'h45-k1':
@@ -1067,8 +919,8 @@ def update_satellite_name(val):
 
 
 @app.callback(
-    Output(component_id='satellite-description', component_property='children'),
-    [Input(component_id='satellite-dropdown-component', component_property='value')]
+    Output('satellite-description', 'children'),
+    [Input('satellite-dropdown-component', 'value')]
 )
 def update_satellite_description(val):
     if val == 'h45-k1':
@@ -1097,17 +949,25 @@ def update_satellite_description(val):
 ##############################################################################################################
 
 @app.callback(
-    Output(component_id='world-map', component_property='figure'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='control-panel-toggle-map', component_property='value'),
-     Input(component_id='satellite-dropdown-component', component_property='value')],
-    [State(component_id='world-map', component_property='figure')]
+    Output('world-map', 'figure'),
+    [Input('interval', 'n_intervals'),
+     Input('control-panel-toggle-map', 'value'),
+     Input('satellite-dropdown-component', 'value')],
+    [State('world-map', 'figure'),
+     State('store-data', 'data'),
+     State('store-data-config', 'data')]
 )
-def update_word_map(clicks, toggle, satellite_type, old_figure):
+def update_word_map(clicks, toggle, satellite_type, old_figure, data, data_config):
     figure = old_figure
+    string_buffer = ''
+    if data_config['satellite_type'] == 0:
+        string_buffer = '_0'
+    if data_config['satellite_type'] == 1:
+        string_buffer = '_1'
+
     if clicks % 2 == 0:
-        figure['data'][1]['lat'] = [float(minute_data['latitude'][-1])]
-        figure['data'][1]['lon'] = [float(minute_data['longitude'][-1])]
+        figure['data'][1]['lat'] = [float(data['minute_data' + string_buffer]['latitude'][-1])]
+        figure['data'][1]['lon'] = [float(data['minute_data' + string_buffer]['longitude'][-1])]
 
     if toggle:
         figure['data'][0]['lat'] = [df_gps_m['lat'][i] for i in range(3600)]
@@ -1123,8 +983,8 @@ def update_word_map(clicks, toggle, satellite_type, old_figure):
 ##############################################################################################################
 
 @app.callback(
-    Output(component_id='control-panel-utc-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals')],
+    Output('control-panel-utc-component', 'value'),
+    [Input('interval', 'n_intervals')],
 )
 def update_time(interval):
     hour = time.localtime(time.time())[3]
@@ -1136,106 +996,92 @@ def update_time(interval):
 
 
 @app.callback(
-    Output(component_id='control-panel-elevation-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
+    [Output('control-panel-elevation-component', 'value'),
+     Output('control-panel-temperature-component', 'value'),
+     Output('control-panel-speed-component', 'value'),
+     Output('control-panel-fuel-component', 'value'),
+     Output('control-panel-battery-component', 'value'),
+     ],
+    [Input('interval', 'n_intervals'),
+     Input('satellite-dropdown-component', 'value')],
+    [State('store-data-config', 'data'),
+     State('store-data', 'data')]
 )
-def update_elevation_component(clicks, satellite_type):
-    return minute_data['elevation'][-1]
+def update_non_gps_component(clicks, satellite_type, data_config, data):
+    string_buffer = ''
+    if data_config['satellite_type'] == 0:
+        string_buffer = '_0'
+    if data_config['satellite_type'] == 1:
+        string_buffer = '_1'
+
+    new_data = []
+    components_list = ['elevation', 'temperature', 'speed', 'fuel', 'battery']
+
+    # Update each graph value
+    for component in components_list:
+        new_data.append(data['minute_data' + string_buffer][component][-1])
+
+    return new_data
 
 
 @app.callback(
-    Output(component_id='control-panel-temperature-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
+    [Output('control-panel-latitude-component', 'value'),
+     Output('control-panel-longitude-component', 'value')],
+    [Input('interval', 'n_intervals'),
+     Input('satellite-dropdown-component', 'value')],
+    [State('store-data-config', 'data'),
+     State('store-data', 'data')]
 )
-def update_temperature_component(clicks, satellite_type):
-    return minute_data['temperature'][-1]
+def update_gps_component(clicks, satellite_type, data_config, data):
+    string_buffer = ''
+    if data_config['satellite_type'] == 0:
+        string_buffer = '_0'
+    if data_config['satellite_type'] == 1:
+        string_buffer = '_1'
+
+    new_data = []
+    for component in ['latitude', 'longitude']:
+        val = list(data['minute_data' + string_buffer][component][-1])
+        if val[0] == '-':
+            new_data.append('0' + ''.join(val[1::]))
+        else:
+            new_data.append(''.join(val))
+    return new_data
 
 
 @app.callback(
-    Output(component_id='control-panel-speed-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
+    [Output('control-panel-latitude-component', 'color'),
+     Output('control-panel-longitude-component', 'color')],
+    [Input('interval', 'n_intervals'),
+     Input('satellite-dropdown-component', 'value')],
+    [State('store-data-config', 'data'),
+     State('store-data', 'data')]
 )
-def update_speed_component(clicks, satellite_type):
-    return minute_data['speed'][-1]
+def update_gps_color(clicks, satellite_type, data_config, data):
+    string_buffer = ''
+    if data_config['satellite_type'] == 0:
+        string_buffer = '_0'
+    if data_config['satellite_type'] == 1:
+        string_buffer = '_1'
+
+    new_data = []
+
+    for component in ['latitude', 'longitude']:
+        value = float(data['minute_data' + string_buffer][component][-1])
+        if value < 0:
+            new_data.append('#ff8e77')
+        else:
+            new_data.append('#017e84')
+
+    return new_data
 
 
 @app.callback(
-    Output(component_id='control-panel-latitude-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
+    Output('control-panel-communication-signal', 'value'),
+    [Input('interval', 'n_intervals'),
+     Input('satellite-dropdown-component', 'value')]
 )
-def update_latitude_component(clicks, satellite_type):
-    val = list(minute_data['latitude'][-1])
-    if val[0] == '-':
-        return '0' + ''.join(val[1::])
-    return "".join(val)
-
-
-@app.callback(
-    Output(component_id='control-panel-longitude-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
-)
-def update_longitude_component(clicks, satellite_type):
-    val = list(minute_data['longitude'][-1])
-    if val[0] == '-':
-        return '0' + ''.join(val[1::])
-    return ''.join(val)
-
-
-@app.callback(
-    Output(component_id='control-panel-latitude-component', component_property='color'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')],
-)
-def update_longitude_component(clicks, satellite_type):
-    value = float(minute_data['latitude'][-1])
-    if value < 0:
-        return '#ff8e77'
-    else:
-        return '#017e84'
-
-
-@app.callback(
-    Output(component_id='control-panel-longitude-component', component_property='color'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')],
-)
-def update_longitude_component(clicks, satellite_type):
-    value = float(minute_data['longitude'][-1])
-    if value < 0:
-        return '#ff8e77'
-    else:
-        return '#017e84'
-
-
-@app.callback(
-    Output(component_id='control-panel-fuel-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
-)
-def update_fuel_component(clicks, satellite_type):
-    return minute_data['fuel'][-1]
-
-
-@app.callback(
-    Output(component_id='control-panel-battery-component', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
-)
-def update_battery_component(clicks, satellite_type):
-    return minute_data['battery'][-1]
-
-
-@app.callback(
-    Output(component_id='control-panel-communication-signal', component_property='value'),
-    [Input(component_id='interval', component_property='n_intervals'),
-     Input(component_id='satellite-dropdown-component', component_property='value')]
-)
-def update_battery_component(clicks, satellite_type):
+def update_communication_component(clicks, satellite_type):
     if clicks % 2 == 0:
         return False
     else:
