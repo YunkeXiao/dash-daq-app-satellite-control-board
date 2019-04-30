@@ -608,7 +608,7 @@ root_layout = html.Div(
         }),
         # For the case no components were clicked, we need to know what type of graph to preserve
         dcc.Store(id='store-data-config', data={
-            'data_type': None,
+            'data_type': '',
             'satellite_type': '',
         }),
         # Check which graph should be displayed
@@ -644,19 +644,27 @@ def update_data(interval, data):
     new_data = data
     # Update H45-K1 data when sat==0, update L12-5 data when sat==1
     for sat in range(2):
+        # Latitude and longitude minute and hour data are really the same
+        if sat == 0:
+            gps_minute_file = df_gps_m_0
+            gps_hour_file = df_gps_m_0
+        else:
+            gps_minute_file = df_gps_m_1
+            gps_hour_file = df_gps_m_1
+
         new_data['minute_data_' + str(sat)]['elevation'].append(data['minute_data_' + str(sat)]['elevation'][0])
         new_data['minute_data_' + str(sat)]['elevation'] = new_data['minute_data_' + str(sat)]['elevation'][1:61]
         new_data['minute_data_' + str(sat)]['temperature'].append(data['minute_data_' + str(sat)]['temperature'][0])
         new_data['minute_data_' + str(sat)]['temperature'] = new_data['minute_data_' + str(sat)]['temperature'][1:61]
         new_data['minute_data_' + str(sat)]['speed'].append(data['minute_data_' + str(sat)]['speed'][0])
         new_data['minute_data_' + str(sat)]['speed'] = new_data['minute_data_' + str(sat)]['speed'][1:61]
-        # Latitude and longitude minute and hour data are really the same
         new_data['minute_data_' + str(sat)]['latitude'].append(
-            "{0:09.4f}".format(df_gps_m_0['lat'][60 + interval % 3600]))
+            "{0:09.4f}".format(gps_minute_file['lat'][60 + interval % 3600]))
         new_data['minute_data_' + str(sat)]['latitude'] = new_data['minute_data_' + str(sat)]['latitude'][1:61]
         new_data['minute_data_' + str(sat)]['longitude'].append(
-            "{0:09.4f}".format(df_gps_m_0['lon'][60 + interval % 3600]))
+            "{0:09.4f}".format(gps_minute_file['lon'][60 + interval % 3600]))
         new_data['minute_data_' + str(sat)]['longitude'] = new_data['minute_data_' + str(sat)]['longitude'][1:61]
+
         new_data['minute_data_' + str(sat)]['fuel'].append(data['minute_data_' + str(sat)]['fuel'][0])
         new_data['minute_data_' + str(sat)]['fuel'] = new_data['minute_data_' + str(sat)]['fuel'][1:61]
         new_data['minute_data_' + str(sat)]['battery'].append(data['minute_data_' + str(sat)]['battery'][0])
@@ -670,10 +678,10 @@ def update_data(interval, data):
             new_data['hour_data_' + str(sat)]['speed'].append(data['hour_data_' + str(sat)]['speed'][0])
             new_data['hour_data_' + str(sat)]['speed'] = new_data['hour_data_' + str(sat)]['speed'][1:61]
             new_data['hour_data_' + str(sat)]['latitude'].append(
-                "{0:09.4f}".format(df_gps_h_0['lat'][(interval // 60000) % 60]))
+                "{0:09.4f}".format(gps_hour_file['lat'][(interval // 60000) % 60]))
             new_data['hour_data_' + str(sat)]['latitude'] = new_data['hour_data_' + str(sat)]['latitude'][1:61]
             new_data['hour_data_' + str(sat)]['longitude'].append(
-                "{0:09.4f}".format(df_gps_h_0['lon'][(interval // 60000) % 60]))
+                "{0:09.4f}".format(gps_hour_file['lon'][(interval // 60000) % 60]))
             new_data['hour_data_' + str(sat)]['longitude'] = new_data['hour_data_' + str(sat)]['longitude'][1:61]
             new_data['hour_data_' + str(sat)]['fuel'].append(data['hour_data_' + str(sat)]['fuel'][0])
             new_data['hour_data_' + str(sat)]['fuel'] = new_data['hour_data_' + str(sat)]['fuel'][1:61]
@@ -771,8 +779,9 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
             else:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
-                    'range': [-60, 60],
+                    'range': [-90, 90],
                     'autorange': False,
+                    'dtick': 30,
                 }
 
         elif type == 'longitude':
@@ -891,11 +900,10 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
 
     # If no component has been selected, check for most recent data_type, to prevent graph from always resetting
     else:
-        if type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
+        if data_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
             set_y_range(data_type)
-            update_graph_data(type)
-        else:
-            return [figure, new_states, new_data_config]
+            update_graph_data(data_type)
+        return [figure, new_states, new_data_config]
     # Update store-data-config['data_type']
     new_data_config['data_type'] = data_type
     return [figure, new_states, new_data_config]
@@ -960,19 +968,27 @@ def update_satellite_description(val):
 def update_word_map(clicks, toggle, satellite_type, old_figure, data, data_config):
     figure = old_figure
     string_buffer = ''
+
+    # Set string buffer as well as drawing the satellite path
     if data_config['satellite_type'] == 0:
         string_buffer = '_0'
-    if data_config['satellite_type'] == 1:
+        figure['data'][0]['lat'] = [df_gps_m_0['lat'][i] for i in range(3600)]
+        figure['data'][0]['lon'] = [df_gps_m_0['lon'][i] for i in range(3600)]
+
+    elif data_config['satellite_type'] == 1:
         string_buffer = '_1'
+        figure['data'][0]['lat'] = [df_gps_m_1['lat'][i] for i in range(3600)]
+        figure['data'][0]['lon'] = [df_gps_m_1['lon'][i] for i in range(3600)]
+    else:
+        figure['data'][0]['lat'] = [df_gps_m['lat'][i] for i in range(3600)]
+        figure['data'][0]['lon'] = [df_gps_m['lon'][i] for i in range(3600)]
 
     if clicks % 2 == 0:
         figure['data'][1]['lat'] = [float(data['minute_data' + string_buffer]['latitude'][-1])]
         figure['data'][1]['lon'] = [float(data['minute_data' + string_buffer]['longitude'][-1])]
 
-    if toggle:
-        figure['data'][0]['lat'] = [df_gps_m['lat'][i] for i in range(3600)]
-        figure['data'][0]['lon'] = [df_gps_m['lon'][i] for i in range(3600)]
-    else:
+    # If toggle is off, hide path
+    if not toggle:
         figure['data'][0]['lat'] = []
         figure['data'][0]['lon'] = []
     return figure
