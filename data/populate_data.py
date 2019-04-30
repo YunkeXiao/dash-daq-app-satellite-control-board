@@ -43,19 +43,19 @@ def add_data(data, file):
 # Data Generation
 #######################################################################################################################
 
-# Minute
+# Data updated by the minute (default data)
 for i in range(60):
     for j in range(4):
         file_h.write(str(0) + ',')
     file_h.write(str(0) + '\n')
 
-# Second
+# Data updated by the second (default data)
 for i in range(60):
     for j in range(4):
         file_m.write(str(0) + ',')
     file_m.write(str(0) + '\n')
 
-# Minute
+# Data updated by the minute (H45-K1 data)
 for i in range(60):
     add_data(randomize(650, 0.2), file_h_0)
     add_data(randomize(290, 0.2), file_h_0)
@@ -63,7 +63,7 @@ for i in range(60):
     add_data(randomize(80, 0.05), file_h_0)
     file_h_0.write(str(randomize(80, 0.05)) + '\n')
 
-# Second
+# Data updated by the second (H45-K1 data)
 for i in range(60):
     add_data(randomize(650, 0.025), file_m_0)
     add_data(randomize(290, 0.025), file_m_0)
@@ -71,7 +71,7 @@ for i in range(60):
     add_data(randomize(80, 0.02), file_m_0)
     file_m_0.write(str(randomize(80, 0.02)) + '\n')
 
-# Minute
+# Data updated by the minute (L12-5 data)
 for i in range(60):
     add_data(randomize(750, 0.2), file_h_1)
     add_data(randomize(350, 0.2), file_h_1)
@@ -79,7 +79,7 @@ for i in range(60):
     add_data(randomize(80, 0.05), file_h_1)
     file_h_1.write(str(randomize(80, 0.05)) + '\n')
 
-# Second
+# Data updated by the second (L12-5 data)
 for i in range(60):
     add_data(randomize(650, 0.025), file_m_1)
     add_data(randomize(290, 0.025), file_m_1)
