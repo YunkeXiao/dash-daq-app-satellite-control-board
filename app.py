@@ -12,12 +12,6 @@ app = dash.Dash(__name__)
 # This is for Heroku
 server = app.server
 
-# CSS Imports
-external_css = ['./assets/style.css']
-
-for css in external_css:
-    app.css.append_css({"external_url": css})
-
 ##############################################################################################################
 # Side panel
 ##############################################################################################################
@@ -35,7 +29,6 @@ satellite_dropdown = dcc.Dropdown(
         },
     ],
     clearable=False,
-    # value='h45-k1',
     style={
         'color': '#017e84',
         'text-align': 'center',
@@ -66,9 +59,7 @@ side_panel_layout = html.Div(
         satellite_dropdown_text,
         html.Div(
             id='satellite-dropdown',
-            children=[
-                satellite_dropdown,
-            ]
+            children=satellite_dropdown,
         ),
         html.Div(
             id='panel-side-text',
@@ -166,7 +157,7 @@ histogram = dcc.Graph(
             }
         }],
         'layout': {
-            'title': 'Select A Propriety To Display',
+            'title': 'Select A Property To Display',
             'width': 400,
             'height': 350,
             'margin': {
@@ -228,7 +219,7 @@ speed = html.Div(
             units='1000km/h',
             color='#017e84',
             style={
-                'color': '#black'
+                'color': 'black'
             }
         )
     ],
@@ -658,8 +649,8 @@ def update_data(interval):
     minute_data_0['elevation'] = minute_data_0['elevation'][1:61]
     minute_data_0['temperature'].append(minute_data_0['temperature'][0])
     minute_data_0['temperature'] = minute_data_0['temperature'][1:61]
-    minute_data_0['speed'].append(minute_data_0['speed'][1])
-    minute_data_0['speed'] = minute_data_0['speed']
+    minute_data_0['speed'].append(minute_data_0['speed'][0])
+    minute_data_0['speed'] = minute_data_0['speed'][1:61]
     # Latitude and longitude minute and hour data are really the same
     minute_data_0['latitude'].append("{0:09.4f}".format(df_gps_m_0['lat'][60 + interval % 3600]))
     minute_data_0['latitude'] = minute_data_0['latitude'][1:61]
@@ -670,16 +661,16 @@ def update_data(interval):
     minute_data_0['battery'].append(minute_data_0['battery'][0])
     minute_data_0['battery'] = minute_data_0['battery'][1:61]
 
-    if interval % 60 == 0:
+    if interval % 60000 == 0:
         hour_data_0['elevation'].append(hour_data_0['elevation'][0])
         hour_data_0['elevation'] = hour_data_0['elevation'][1:61]
         hour_data_0['temperature'].append(hour_data_0['temperature'][0])
         hour_data_0['temperature'] = hour_data_0['temperature'][1:61]
         hour_data_0['speed'].append(hour_data_0['speed'][0])
         hour_data_0['speed'] = hour_data_0['speed'][1:61]
-        hour_data_0['latitude'].append("{0:09.4f}".format(df_gps_h_0['lat'][interval % 60]))
+        hour_data_0['latitude'].append("{0:09.4f}".format(df_gps_h_0['lat'][interval % 60000]))
         hour_data_0['latitude'] = hour_data_0['latitude'][1:61]
-        hour_data_0['longitude'].append("{0:09.4f}".format(df_gps_h_0['lon'][interval % 60]))
+        hour_data_0['longitude'].append("{0:09.4f}".format(df_gps_h_0['lon'][interval % 60000]))
         hour_data_0['longitude'] = hour_data_0['longitude'][1:61]
         hour_data_0['fuel'].append(hour_data_0['fuel'][0])
         hour_data_0['fuel'] = hour_data_0['fuel'][1:61]
@@ -691,8 +682,8 @@ def update_data(interval):
     minute_data_1['elevation'] = minute_data_1['elevation'][1:61]
     minute_data_1['temperature'].append(minute_data_1['temperature'][0])
     minute_data_1['temperature'] = minute_data_1['temperature'][1:61]
-    minute_data_1['speed'].append(minute_data_1['speed'][1])
-    minute_data_1['speed'] = minute_data_1['speed']
+    minute_data_1['speed'].append(minute_data_1['speed'][0])
+    minute_data_1['speed'] = minute_data_1['speed'][1:61]
     # Latitude and longitude minute and hour data are really the same
     minute_data_1['latitude'].append("{0:09.4f}".format(df_gps_m_1['lat'][60 + interval % 3600]))
     minute_data_1['latitude'] = minute_data_1['latitude'][1:61]
@@ -703,16 +694,16 @@ def update_data(interval):
     minute_data_1['battery'].append(minute_data_1['battery'][0])
     minute_data_1['battery'] = minute_data_1['battery'][1:61]
 
-    if interval % 60 == 0:
+    if interval % 60000 == 0:
         hour_data_1['elevation'].append(hour_data_1['elevation'][0])
         hour_data_1['elevation'] = hour_data_1['elevation'][1:61]
         hour_data_1['temperature'].append(hour_data_1['temperature'][0])
         hour_data_1['temperature'] = hour_data_1['temperature'][1:61]
         hour_data_1['speed'].append(hour_data_1['speed'][0])
         hour_data_1['speed'] = hour_data_1['speed'][1:61]
-        hour_data_1['latitude'].append("{0:09.4f}".format(df_gps_h_1['lat'][interval % 60]))
+        hour_data_1['latitude'].append("{0:09.4f}".format(df_gps_h_1['lat'][interval % 60000]))
         hour_data_1['latitude'] = hour_data_1['latitude'][1:61]
-        hour_data_1['longitude'].append("{0:09.4f}".format(df_gps_h_1['lon'][interval % 60]))
+        hour_data_1['longitude'].append("{0:09.4f}".format(df_gps_h_1['lon'][interval % 60000]))
         hour_data_1['longitude'] = hour_data_1['longitude'][1:61]
         hour_data_1['fuel'].append(hour_data_1['fuel'][0])
         hour_data_1['fuel'] = hour_data_1['fuel'][1:61]
@@ -923,34 +914,9 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
 
     # If no component has been selected, check for most recent data_type, to prevent graph from always resetting
     else:
-        if data_type == 'elevation':
-            set_y_range('elevation')
-            update_graph_data('elevation')
-
-        elif data_type == 'temperature':
-            set_y_range('temperature')
-            update_graph_data('temperature')
-
-        elif data_type == 'speed':
-            set_y_range('speed')
-            update_graph_data('speed')
-
-        elif data_type == 'latitude':
-            set_y_range('latitude')
-            update_graph_data('latitude')
-
-        elif data_type == 'longitude':
-            set_y_range('longitude')
-            update_graph_data('longitude')
-
-        elif data_type == 'fuel':
-            set_y_range('fuel')
-            update_graph_data('fuel')
-
-        elif data_type == 'battery':
-            set_y_range('battery')
-            update_graph_data('battery')
-
+        if data_type is not None:
+            set_y_range(data_type)
+            update_graph_data(data_type)
         else:
             return figure
     return figure
@@ -1076,16 +1042,10 @@ def update_word_map(clicks, toggle, satellite_type, old_figure):
 )
 def update_time(interval):
     hour = time.localtime(time.time())[3]
-    if hour < 10:
-        hour = '0' + str(hour)
-    else:
-        hour = str(hour)
+    hour = str(hour).zfill(2)
 
     minute = time.localtime(time.time())[4]
-    if minute < 10:
-        minute = '0' + str(minute)
-    else:
-        minute = str(minute)
+    minute = str(minute).zfill(2)
     return hour + ':' + minute
 
 
