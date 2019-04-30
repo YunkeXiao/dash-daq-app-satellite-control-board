@@ -1,4 +1,5 @@
 import random
+import json
 import time
 import pandas as pd
 import dash
@@ -440,7 +441,7 @@ main_panel_layout = html.Div(
     children=[
         html.P(
             id='placeholder',
-            children=[0]
+            children=[1]
         ),
         dcc.Interval(
             id='interval',
@@ -524,11 +525,102 @@ main_panel_layout = html.Div(
 )
 
 ##############################################################################################################
+# Data generation
+##############################################################################################################
+
+# Pandas
+df_non_gps_h = pd.read_csv('./data/non_gps_data_h.csv')
+df_non_gps_m = pd.read_csv('./data/non_gps_data_m.csv')
+df_gps_m = pd.read_csv('./data/gps_data_m.csv')
+df_gps_h = pd.read_csv('./data/gps_data_h.csv')
+
+# Satellite H45-K1 data
+df_non_gps_h_0 = pd.read_csv('./data/non_gps_data_h_0.csv')
+df_non_gps_m_0 = pd.read_csv('./data/non_gps_data_m_0.csv')
+df_gps_m_0 = pd.read_csv('./data/gps_data_m_0.csv')
+df_gps_h_0 = pd.read_csv('./data/gps_data_h_0.csv')
+
+# Satellite L12-5 data
+df_non_gps_h_1 = pd.read_csv('./data/non_gps_data_h_1.csv')
+df_non_gps_m_1 = pd.read_csv('./data/non_gps_data_m_1.csv')
+df_gps_m_1 = pd.read_csv('./data/gps_data_m_1.csv')
+df_gps_h_1 = pd.read_csv('./data/gps_data_h_1.csv')
+
+##############################################################################################################
 # Root
 ##############################################################################################################
 root_layout = html.Div(
     id='root',
     children=[
+        dcc.Store(id='store-data'),
+        dcc.Store(id='store-placeholder', data={
+            'hour_data':{
+                'elevation': [df_non_gps_h['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_h['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_h['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_h['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_h['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_h['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_h['battery'][i] for i in range(0, 60)],
+            },
+            'minute_data':{
+                'elevation': [df_non_gps_m['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_m['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_m['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_m['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_m['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_m['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_m['battery'][i] for i in range(0, 60)],
+            },
+            'hour_data_0':{
+                'elevation': [df_non_gps_h_0['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_h_0['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_h_0['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_h_0['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_h_0['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_h_0['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_h_0['battery'][i] for i in range(0, 60)],
+            },
+            'minute_data_0':{
+                'elevation': [df_non_gps_m_0['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_m_0['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_m_0['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_m_0['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_m_0['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_m_0['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_m_0['battery'][i] for i in range(0, 60)],
+            },
+            'hour_data_1':{
+                'elevation': [df_non_gps_h_1['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_h_1['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_h_1['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_h_1['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_h_1['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_h_1['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_h_1['battery'][i] for i in range(0, 60)],
+            },
+            'minute_data_1':{
+                'elevation': [df_non_gps_m_1['elevation'][i] for i in range(0, 60)],
+                'temperature': [df_non_gps_m_1['temperature'][i] for i in range(0, 60)],
+                'speed': [df_non_gps_m_1['speed'][i] for i in range(0, 60)],
+                'latitude': ["{0:09.4f}".format(df_gps_m_1['lat'][i]) for i in range(0, 60)],
+                'longitude': ["{0:09.4f}".format(df_gps_m_1['lon'][i]) for i in range(0, 60)],
+                'fuel': [df_non_gps_m_1['fuel'][i] for i in range(0, 60)],
+                'battery': [df_non_gps_m_1['battery'][i] for i in range(0, 60)],
+            }
+
+        }),
+        dcc.Store(id='store-data-type', data=''),
+        dcc.Store(id='store-previous-states', data={
+                'elevation': 0,
+                'temperature': 0,
+                'speed': 0,
+                'latitude': 0,
+                'longitude': 0,
+                'fuel': 0,
+                'battery': 0,
+            }
+        ),
         side_panel_layout,
         main_panel_layout
     ]
@@ -668,9 +760,9 @@ def update_data(interval):
         hour_data_0['temperature'] = hour_data_0['temperature'][1:61]
         hour_data_0['speed'].append(hour_data_0['speed'][0])
         hour_data_0['speed'] = hour_data_0['speed'][1:61]
-        hour_data_0['latitude'].append("{0:09.4f}".format(df_gps_h_0['lat'][interval % 60000]))
+        hour_data_0['latitude'].append("{0:09.4f}".format(df_gps_h_0['lat'][(interval//60000) % 60]))
         hour_data_0['latitude'] = hour_data_0['latitude'][1:61]
-        hour_data_0['longitude'].append("{0:09.4f}".format(df_gps_h_0['lon'][interval % 60000]))
+        hour_data_0['longitude'].append("{0:09.4f}".format(df_gps_h_0['lon'][(interval//60000) % 60]))
         hour_data_0['longitude'] = hour_data_0['longitude'][1:61]
         hour_data_0['fuel'].append(hour_data_0['fuel'][0])
         hour_data_0['fuel'] = hour_data_0['fuel'][1:61]
@@ -819,7 +911,6 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
     def update_graph_data(type):
         global data_type
         data_type = type
-
         if minute_mode:
             figure['data'][0]['y'] = list(reversed(minute_data[type]))
         else:
@@ -914,7 +1005,7 @@ def update_graph(interval, minute_mode, elevation_n_clicks, temperature_n_clicks
 
     # If no component has been selected, check for most recent data_type, to prevent graph from always resetting
     else:
-        if data_type is not None:
+        if data_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
             set_y_range(data_type)
             update_graph_data(data_type)
         else:
