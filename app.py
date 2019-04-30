@@ -439,10 +439,6 @@ minute_toggle = daq.ToggleSwitch(
 main_panel_layout = html.Div(
     id='panel-upper-lower',
     children=[
-        html.P(
-            id='placeholder',
-            children=[1]
-        ),
         dcc.Interval(
             id='interval',
             interval=1 * 2000,
@@ -552,8 +548,8 @@ df_gps_h_1 = pd.read_csv('./data/gps_data_h_1.csv')
 root_layout = html.Div(
     id='root',
     children=[
-        dcc.Store(id='store-data'),
-        dcc.Store(id='store-placeholder', data={
+        dcc.Store(id='store-placeholder'),
+        dcc.Store(id='store-data', data={
             'hour_data':{
                 'elevation': [df_non_gps_h['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h['temperature'][i] for i in range(0, 60)],
@@ -731,11 +727,10 @@ minute_data_1 = {
 
 # Add new data every second/minute
 @app.callback(
-    Output(component_id='placeholder', component_property='children'),
+    Output(component_id='store-placeholder', component_property='data'),
     [Input(component_id='interval', component_property='n_intervals')]
 )
 def update_data(interval):
-
     # Update H45-K1 data
     minute_data_0['elevation'].append(minute_data_0['elevation'][0])
     minute_data_0['elevation'] = minute_data_0['elevation'][1:61]
