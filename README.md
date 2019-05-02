@@ -1,34 +1,53 @@
-# dash-daq-app-template
-
-fix dash-daq link
-
+# Dash-DAQ-Satellite-Dashboard
 
 ## Introduction
-`dash-daq-app-template` is a repository created to serve as a guideline of what a Dash-DAQ app's repository should look like.
+A dash application that tracks satellites and displays live data captured by them.
 
-In this area, include a brief description of what the application does, and include a link to the [Heroku application](http://dash-daq-stepper-motor.herokuapp.com/), and dashdaq.io [blog post](https://www.dashdaq.io/stepper-motor-control-in-python). 
-
-### [Technique/field associated with the instrument]
-Give a brief description of the scientific background related to the instrument that you're interfacing with.
+### Satellite
+Artificial satellites are objects placed into orbit for various tasks, such as surveillance and transferring radio data 
+across the world. It's important to monitor satellites to insure that they can accomplish their jobs, so information such as
+its position and elevation are, for example, useful to determine whether or not a satellite is deviating from its original path
+due to unforeseen circumstances.
 
 ### dash-daq
-Include a link to [Dash-DAQ](http://dash-daq.netlify.com/#about); describe what it is and what it does.
+[Dash-DAQ](http://dash-daq.netlify.com/#about) is a data acquisition and control package built on top of Plotly's 
+[Dash](https://plot.ly/products/dash/). It comprises a robust set of controls that make it simpler to integrate data 
+acquisition and controls into your Dash applications.
 
 
 ## Requirements
-Here you should include details of the Python version required to control your app; any packages; any requirements of the file structure; and the commands to run that will set up your app and get it ready to run.
+We suggest you to create a virtual environment for python3 to run this app. To do so, run:
+```bash
+python3 -m virtualenv [your environment name]
+```
+```bash
+source activate [your environment name]
+```
+To install all of this app-specific required packages to this environment, simply run:
+```bash
+pip install -r requirements.txt
+```
+
 
 ## How to use the app
-Here, you should put the command needed to run your app, and then the steps that the user should take to use it. You should include screenshots of the app running in your own browser to make it easier to follow along. 
-
-Then, show a step-by-step guide of how your app works, and what each control does.
-
-If possible, include screenshots of something in the app failing, and, if any, the steps that the user can take to correct the error. 
+To run this application locally, simply type the following into the command line:
+```bash
+python app.py
+```
+You will then see the satellite dashboard.
+--
+![Satellite Dashboard](/assets/satellite-dashboard.png)
 
 ### Controls
-Here, provide a list of all of your controls and a description of what they do.
+* Satellite dropdown: Select which satellite to track.
+* Histogram: Data is updated every 2 seconds, and to view the histogram for a desired data type, simply click on the
+corresponding Dash component.
+* Path toggle: Show and hide the expected satellite path.
+* Time toggle: Display data from the past hour or the past minute. 
 
 
-## Resources
-If necessary, include resources like documentation for the specific instrument you're using, or the pages associated with any external packages used in the project. 
-
+### Resources
+#### Dash
+Dash abstracts away all of the technologies and protocols required to build an interactive web-based application, and 
+is a simple and effective way to bind a user interface around your Python code. To learn more about Dash, check out our 
+[documentation](https://dash.plot.ly/). 
