@@ -715,7 +715,6 @@ def update_data(interval, data):
 def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temperature_n_clicks, speed_n_clicks,
                  latitude_n_clicks, longitude_n_clicks, fuel_n_clicks, battery_n_clicks, data, previous_states,
                  data_config):
-
     # Used to check stuff
     new_data_config = data_config
     data_type = data_config['data_type']
@@ -932,20 +931,24 @@ def update_satellite_name(val):
 )
 def update_satellite_description(val):
     if val == 'h45-k1':
-        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget mi dictum, cursus arcu " \
-               "in, porta justo. Vivamus et hendrerit sapien, sed accumsan justo. Sed sodales velit id elit egestas " \
-               "aliquet. Phasellus ex tortor, ullamcorper mattis justo pulvinar, pellentesque gravida urna. Vivamus ac " \
-               "libero posuere, dictum lectus at, consectetur tellus. Vestibulum non urna id ante fermentum blandit. "
+        text = "H45-K1, also known as GPS IIR-9 and GPS SVN-45, is an American navigation satellite which forms part " \
+               "of the Global Positioning System. It was the ninth Block IIR GPS satellite to be launched, out of " \
+               "thirteen in the original configuration, and twenty one overall. It was built by Lockheed Martin, using " \
+               "the AS-4000 satellite bus. -168 was launched at 22:09:01 UTC on 31 March 2003, atop a Delta II carrier " \
+               "rocket, flight number D297, flying in the 7925-9.5 configuration. The launch took place from Space " \
+               "Launch Complex 17A at the Cape Canaveral Air Force Station, and placed H45-K1 into a transfer orbit. " \
+               "The satellite raised itself into medium Earth orbit using a Star-37FM apogee motor."
         return text
 
     elif val == 'l12-5':
-        text = "Bacon ipsum dolor amet cupim biltong rump, prosciutto filet mignon ground round flank doner. Short " \
-               "ribs kielbasa pig beef. Kielbasa fatback porchetta salami, chicken bacon cow flank andouille pork " \
-               "chop filet mignon t-bone. Frankfurter short ribs picanha chicken pork chop pork belly sausage, corned " \
-               "beef leberkas. Shank sirloin pork spare ribs strip steak venison, chicken jowl landjaeger ham pig " \
-               "prosciutto. Chuck bresaola fatback, turkey chicken pork burgdoggen andouille meatball pastrami " \
-               "hamburger salami turducken. T-bone porchetta tri-tip, meatball turkey pork belly buffalo sausage " \
-               "alcatra hamburger bacon cow."
+        text = "L12-5, also known as NRO Launch 22 or NROL-22, is an American signals intelligence satellite, " \
+               "operated by the National Reconnaissance Office. Launched in 2006, it has been identified as the first " \
+               "in a new series of satellites which are replacing the earlier Trumpet spacecraft. L12-5 was launched " \
+               "by Boeing, using a Delta IV carrier rocket flying in the Medium+(4,2) configuration. The rocket was the " \
+               "first Delta IV to launch from Vandenberg Air Force Base, flying from Space Launch Complex 6, a launch " \
+               "pad originally constructed as part of abandoned plans for manned launches from Vandenberg, originally " \
+               "using Titan rockets, and later Space Shuttles. The launch also marked the first launch of an Evolved " \
+               "Expendable Launch Vehicle from Vandenberg, and the first launch of an NRO payload on an EELV."
         return text
 
     else:
