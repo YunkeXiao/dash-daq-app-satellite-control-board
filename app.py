@@ -643,42 +643,45 @@ def update_data(interval, data):
         else:
             gps_minute_file = df_gps_m_1
             gps_hour_file = df_gps_h_1
-
-        new_data['minute_data_' + str(sat)]['elevation'].append(data['minute_data_' + str(sat)]['elevation'][0])
-        new_data['minute_data_' + str(sat)]['elevation'] = new_data['minute_data_' + str(sat)]['elevation'][1:61]
-        new_data['minute_data_' + str(sat)]['temperature'].append(data['minute_data_' + str(sat)]['temperature'][0])
-        new_data['minute_data_' + str(sat)]['temperature'] = new_data['minute_data_' + str(sat)]['temperature'][1:61]
-        new_data['minute_data_' + str(sat)]['speed'].append(data['minute_data_' + str(sat)]['speed'][0])
-        new_data['minute_data_' + str(sat)]['speed'] = new_data['minute_data_' + str(sat)]['speed'][1:61]
-        new_data['minute_data_' + str(sat)]['latitude'].append(
+        
+        m_data_key = 'minute_data_' + str(sat) 
+        h_data_key = 'hour_data_' + str(sat)
+        
+        new_data[m_data_key]['elevation'].append(data[m_data_key]['elevation'][0])
+        new_data[m_data_key]['elevation'] = new_data[m_data_key]['elevation'][1:61]
+        new_data[m_data_key]['temperature'].append(data[m_data_key]['temperature'][0])
+        new_data[m_data_key]['temperature'] = new_data[m_data_key]['temperature'][1:61]
+        new_data[m_data_key]['speed'].append(data[m_data_key]['speed'][0])
+        new_data[m_data_key]['speed'] = new_data[m_data_key]['speed'][1:61]
+        new_data[m_data_key]['latitude'].append(
             '{0:09.4f}'.format(gps_minute_file['lat'][(60 + interval) % 3600]))
-        new_data['minute_data_' + str(sat)]['latitude'] = new_data['minute_data_' + str(sat)]['latitude'][1:61]
-        new_data['minute_data_' + str(sat)]['longitude'].append(
+        new_data[m_data_key]['latitude'] = new_data[m_data_key]['latitude'][1:61]
+        new_data[m_data_key]['longitude'].append(
             '{0:09.4f}'.format(gps_minute_file['lon'][(60 + interval) % 3600]))
-        new_data['minute_data_' + str(sat)]['longitude'] = new_data['minute_data_' + str(sat)]['longitude'][1:61]
+        new_data[m_data_key]['longitude'] = new_data[m_data_key]['longitude'][1:61]
 
-        new_data['minute_data_' + str(sat)]['fuel'].append(data['minute_data_' + str(sat)]['fuel'][0])
-        new_data['minute_data_' + str(sat)]['fuel'] = new_data['minute_data_' + str(sat)]['fuel'][1:61]
-        new_data['minute_data_' + str(sat)]['battery'].append(data['minute_data_' + str(sat)]['battery'][0])
-        new_data['minute_data_' + str(sat)]['battery'] = new_data['minute_data_0']['battery'][1:61]
+        new_data[m_data_key]['fuel'].append(data[m_data_key]['fuel'][0])
+        new_data[m_data_key]['fuel'] = new_data[m_data_key]['fuel'][1:61]
+        new_data[m_data_key]['battery'].append(data[m_data_key]['battery'][0])
+        new_data[m_data_key]['battery'] = new_data['minute_data_0']['battery'][1:61]
 
         if interval % 60000 == 0:
-            new_data['hour_data_' + str(sat)]['elevation'].append(data['hour_data_' + str(sat)]['elevation'][0])
-            new_data['hour_data_' + str(sat)]['elevation'] = new_data['hour_data_' + str(sat)]['elevation'][1:61]
-            new_data['hour_data_' + str(sat)]['temperature'].append(data['hour_data_' + str(sat)]['temperature'][0])
-            new_data['hour_data_' + str(sat)]['temperature'] = new_data['hour_data_' + str(sat)]['temperature'][1:61]
-            new_data['hour_data_' + str(sat)]['speed'].append(data['hour_data_' + str(sat)]['speed'][0])
-            new_data['hour_data_' + str(sat)]['speed'] = new_data['hour_data_' + str(sat)]['speed'][1:61]
-            new_data['hour_data_' + str(sat)]['latitude'].append(
+            new_data[h_data_key]['elevation'].append(data[h_data_key]['elevation'][0])
+            new_data[h_data_key]['elevation'] = new_data[h_data_key]['elevation'][1:61]
+            new_data[h_data_key]['temperature'].append(data[h_data_key]['temperature'][0])
+            new_data[h_data_key]['temperature'] = new_data[h_data_key]['temperature'][1:61]
+            new_data[h_data_key]['speed'].append(data[h_data_key]['speed'][0])
+            new_data[h_data_key]['speed'] = new_data[h_data_key]['speed'][1:61]
+            new_data[h_data_key]['latitude'].append(
                 '{0:09.4f}'.format(gps_hour_file['lat'][interval % 60]))
-            new_data['hour_data_' + str(sat)]['latitude'] = new_data['hour_data_' + str(sat)]['latitude'][1:61]
-            new_data['hour_data_' + str(sat)]['longitude'].append(
+            new_data[h_data_key]['latitude'] = new_data[h_data_key]['latitude'][1:61]
+            new_data[h_data_key]['longitude'].append(
                 '{0:09.4f}'.format(gps_hour_file['lon'][interval % 60]))
-            new_data['hour_data_' + str(sat)]['longitude'] = new_data['hour_data_' + str(sat)]['longitude'][1:61]
-            new_data['hour_data_' + str(sat)]['fuel'].append(data['hour_data_' + str(sat)]['fuel'][0])
-            new_data['hour_data_' + str(sat)]['fuel'] = new_data['hour_data_' + str(sat)]['fuel'][1:61]
-            new_data['hour_data_' + str(sat)]['battery'].append(data['hour_data_' + str(sat)]['battery'][0])
-            new_data['hour_data_' + str(sat)]['battery'] = new_data['hour_data_' + str(sat)]['battery']
+            new_data[h_data_key]['longitude'] = new_data[h_data_key]['longitude'][1:61]
+            new_data[h_data_key]['fuel'].append(data[h_data_key]['fuel'][0])
+            new_data[h_data_key]['fuel'] = new_data[h_data_key]['fuel'][1:61]
+            new_data[h_data_key]['battery'].append(data[h_data_key]['battery'][0])
+            new_data[h_data_key]['battery'] = new_data[h_data_key]['battery']
 
     return new_data
 
@@ -689,7 +692,9 @@ def update_data(interval, data):
 
 # Update the graph
 @app.callback(
-    [Output('graph-panel', 'figure'), Output('store-previous-states', 'data'), Output('store-data-config', 'data')],
+    [Output('graph-panel', 'figure'),
+     Output('store-previous-states', 'data'),
+     Output('store-data-config', 'data')],
     [Input('interval', 'n_intervals'),
      Input('satellite-dropdown-component', 'value'),
      Input('control-panel-toggle-minute', 'value'),
@@ -704,8 +709,10 @@ def update_data(interval, data):
      State('store-previous-states', 'data'),
      State('store-data-config', 'data')]
 )
-def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temperature_n_clicks, speed_n_clicks,
-                 latitude_n_clicks, longitude_n_clicks, fuel_n_clicks, battery_n_clicks, data, previous_states,
+def update_graph(interval, satellite_type, minute_mode,
+                 elevation_n_clicks, temperature_n_clicks, speed_n_clicks,
+                 latitude_n_clicks, longitude_n_clicks, fuel_n_clicks,
+                 battery_n_clicks, data, previous_states,
                  data_config):
     # Used to check stuff
     new_data_config = data_config
@@ -721,8 +728,8 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
         new_data_config['satellite_type'] = None
 
     # Decide the range of Y given if minute_mode is on
-    def set_y_range(type):
-        if type == 'elevation':
+    def set_y_range(data_key):
+        if data_key == 'elevation':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -735,7 +742,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                     'autorange': False
                 }
 
-        elif type == 'temperature':
+        elif data_key == 'temperature':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -748,7 +755,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                     'autorange': False
                 }
 
-        elif type == 'speed':
+        elif data_key == 'speed':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -761,7 +768,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                     'autorange': False
                 }
 
-        elif type == 'latitude':
+        elif data_key == 'latitude':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -775,7 +782,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                     'dtick': 30,
                 }
 
-        elif type == 'longitude':
+        elif data_key == 'longitude':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -788,7 +795,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                     'autorange': False,
                 }
 
-        elif type == 'fuel' or type == 'battery':
+        elif data_key == 'fuel' or data_key == 'battery':
             if minute_mode:
                 figure['layout']['yaxis'] = {
                     'rangemode': 'normal',
@@ -802,7 +809,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                 }
 
     # Function to update values
-    def update_graph_data(type):
+    def update_graph_data(data_key):
         string_buffer = ''
         if data_config['satellite_type'] == 0:
             string_buffer = '_0'
@@ -810,13 +817,13 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
             string_buffer = '_1'
 
         if minute_mode:
-            figure['data'][0]['y'] = list(reversed(data['minute_data' + string_buffer][type]))
+            figure['data'][0]['y'] = list(reversed(data['minute_data' + string_buffer][data_key]))
         else:
-            figure['data'][0]['y'] = list(reversed(data['hour_data' + string_buffer][type]))
+            figure['data'][0]['y'] = list(reversed(data['hour_data' + string_buffer][data_key]))
 
         # Graph title changes depending on graphed data
-        figure['layout']['title'] = type.capitalize() + ' Histogram'
-        return type
+        figure['layout']['title'] = data_key.capitalize() + ' Histogram'
+        return data_key
 
     # A default figure option to base off everything else from
     figure = {
