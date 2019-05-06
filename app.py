@@ -604,17 +604,6 @@ root_layout = html.Div(
             'info_type': '',
             'satellite_type': '',
         }),
-        # Check which graph should be displayed
-        dcc.Store(id='store-previous-states', data={
-            'elevation': 0,
-            'temperature': 0,
-            'speed': 0,
-            'latitude': 0,
-            'longitude': 0,
-            'fuel': 0,
-            'battery': 0,
-        }
-                  ),
         side_panel_layout,
         main_panel_layout
     ]
@@ -643,10 +632,10 @@ def update_data(interval, data):
         else:
             gps_minute_file = df_gps_m_1
             gps_hour_file = df_gps_h_1
-        
-        m_data_key = 'minute_data_' + str(sat) 
+
+        m_data_key = 'minute_data_' + str(sat)
         h_data_key = 'hour_data_' + str(sat)
-        
+
         new_data[m_data_key]['elevation'].append(data[m_data_key]['elevation'][0])
         new_data[m_data_key]['elevation'] = new_data[m_data_key]['elevation'][1:61]
         new_data[m_data_key]['temperature'].append(data[m_data_key]['temperature'][0])
@@ -693,7 +682,6 @@ def update_data(interval, data):
 # Update the graph
 @app.callback(
     [Output('graph-panel', 'figure'),
-     Output('store-previous-states', 'data'),
      Output('store-data-config', 'data')],
     [Input('interval', 'n_intervals'),
      Input('satellite-dropdown-component', 'value'),
@@ -706,18 +694,23 @@ def update_data(interval, data):
      Input('control-panel-fuel', 'n_clicks'),
      Input('control-panel-battery', 'n_clicks')],
     [State('store-data', 'data'),
-     State('store-previous-states', 'data'),
      State('store-data-config', 'data')]
 )
 def update_graph(interval, satellite_type, minute_mode,
                  elevation_n_clicks, temperature_n_clicks, speed_n_clicks,
                  latitude_n_clicks, longitude_n_clicks, fuel_n_clicks,
-                 battery_n_clicks, data, previous_states,
+                 battery_n_clicks, data,
                  data_config):
     # Used to check stuff
     new_data_config = data_config
     info_type = data_config['info_type']
-    new_states = previous_states
+    ctx = dash.callback_context
+
+    # Check which input fired off the component
+    if not ctx.triggered:
+        trigger_input = ''
+    else:
+        trigger_input = ctx.triggered[0]['prop_id'].split('.')[0]
 
     # Update store-data-config['satellite_type']
     if satellite_type == 'h45-k1':
@@ -836,7 +829,7 @@ def update_graph(interval, satellite_type, minute_mode,
             }
         }],
         'layout': {
-            'title': 'Select A Propriety To Display',
+            'title': 'Select A Property To Display',
             'width': 400,
             'height': 350,
             'margin': {
@@ -861,38 +854,31 @@ def update_graph(interval, satellite_type, minute_mode,
     }
 
     # First pass checks if a component has been selected
-    if elevation_n_clicks != previous_states['elevation']:
-        new_states['elevation'] += 1
+    if trigger_input == 'control-panel-elevation':
         set_y_range('elevation')
         info_type = update_graph_data('elevation')
 
-    elif temperature_n_clicks != previous_states['temperature']:
-        new_states['temperature'] += 1
+    elif trigger_input == 'control-panel-temperature':
         set_y_range('temperature')
         info_type = update_graph_data('temperature')
 
-    elif speed_n_clicks != previous_states['speed']:
-        new_states['speed'] += 1
+    elif trigger_input == 'control-panel-speed':
         set_y_range('speed')
         info_type = update_graph_data('speed')
 
-    elif latitude_n_clicks != previous_states['latitude']:
-        new_states['latitude'] += 1
+    elif trigger_input == 'control-panel-latitude':
         set_y_range('latitude')
         info_type = update_graph_data('latitude')
 
-    elif longitude_n_clicks != previous_states['longitude']:
-        new_states['longitude'] += 1
+    elif trigger_input == 'control-panel-longitude':
         set_y_range('longitude')
         info_type = update_graph_data('longitude')
 
-    elif fuel_n_clicks != previous_states['fuel']:
-        new_states['fuel'] += 1
+    elif trigger_input == 'control-panel-fuel':
         set_y_range('fuel')
         info_type = update_graph_data('fuel')
 
-    elif battery_n_clicks != previous_states['battery']:
-        new_states['battery'] += 1
+    elif trigger_input == 'control-panel-battery':
         set_y_range('battery')
         info_type = update_graph_data('battery')
 
@@ -901,10 +887,10 @@ def update_graph(interval, satellite_type, minute_mode,
         if info_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
             set_y_range(info_type)
             update_graph_data(info_type)
-        return [figure, new_states, new_data_config]
+        return [figure, new_data_config]
     # Update store-data-config['info_type']
     new_data_config['info_type'] = info_type
-    return [figure, new_states, new_data_config]
+    return [figure, new_data_config]
 
 
 ##############################################################################################################
