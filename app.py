@@ -601,7 +601,7 @@ root_layout = html.Div(
         }),
         # For the case no components were clicked, we need to know what type of graph to preserve
         dcc.Store(id='store-data-config', data={
-            'data_type': '',
+            'info_type': '',
             'satellite_type': '',
         }),
         # Check which graph should be displayed
@@ -710,7 +710,7 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
                  data_config):
     # Used to check stuff
     new_data_config = data_config
-    data_type = data_config['data_type']
+    info_type = data_config['info_type']
     new_states = previous_states
 
     # Update store-data-config['satellite_type']
@@ -858,46 +858,46 @@ def update_graph(interval, satellite_type, minute_mode, elevation_n_clicks, temp
     if elevation_n_clicks != previous_states['elevation']:
         new_states['elevation'] += 1
         set_y_range('elevation')
-        data_type = update_graph_data('elevation')
+        info_type = update_graph_data('elevation')
 
     elif temperature_n_clicks != previous_states['temperature']:
         new_states['temperature'] += 1
         set_y_range('temperature')
-        data_type = update_graph_data('temperature')
+        info_type = update_graph_data('temperature')
 
     elif speed_n_clicks != previous_states['speed']:
         new_states['speed'] += 1
         set_y_range('speed')
-        data_type = update_graph_data('speed')
+        info_type = update_graph_data('speed')
 
     elif latitude_n_clicks != previous_states['latitude']:
         new_states['latitude'] += 1
         set_y_range('latitude')
-        data_type = update_graph_data('latitude')
+        info_type = update_graph_data('latitude')
 
     elif longitude_n_clicks != previous_states['longitude']:
         new_states['longitude'] += 1
         set_y_range('longitude')
-        data_type = update_graph_data('longitude')
+        info_type = update_graph_data('longitude')
 
     elif fuel_n_clicks != previous_states['fuel']:
         new_states['fuel'] += 1
         set_y_range('fuel')
-        data_type = update_graph_data('fuel')
+        info_type = update_graph_data('fuel')
 
     elif battery_n_clicks != previous_states['battery']:
         new_states['battery'] += 1
         set_y_range('battery')
-        data_type = update_graph_data('battery')
+        info_type = update_graph_data('battery')
 
-    # If no component has been selected, check for most recent data_type, to prevent graph from always resetting
+    # If no component has been selected, check for most recent info_type, to prevent graph from always resetting
     else:
-        if data_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
-            set_y_range(data_type)
-            update_graph_data(data_type)
+        if info_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
+            set_y_range(info_type)
+            update_graph_data(info_type)
         return [figure, new_states, new_data_config]
-    # Update store-data-config['data_type']
-    new_data_config['data_type'] = data_type
+    # Update store-data-config['info_type']
+    new_data_config['info_type'] = info_type
     return [figure, new_states, new_data_config]
 
 
