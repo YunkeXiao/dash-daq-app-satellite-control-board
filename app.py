@@ -637,13 +637,12 @@ def update_data(interval, data):
     new_data = data
     # Update H45-K1 data when sat==0, update L12-5 data when sat==1
     for sat in range(2):
-        # Latitude and longitude minute and hour data are really the same
         if sat == 0:
             gps_minute_file = df_gps_m_0
-            gps_hour_file = df_gps_m_0
+            gps_hour_file = df_gps_h_0
         else:
             gps_minute_file = df_gps_m_1
-            gps_hour_file = df_gps_m_1
+            gps_hour_file = df_gps_h_1
 
         new_data['minute_data_' + str(sat)]['elevation'].append(data['minute_data_' + str(sat)]['elevation'][0])
         new_data['minute_data_' + str(sat)]['elevation'] = new_data['minute_data_' + str(sat)]['elevation'][1:61]
@@ -652,10 +651,10 @@ def update_data(interval, data):
         new_data['minute_data_' + str(sat)]['speed'].append(data['minute_data_' + str(sat)]['speed'][0])
         new_data['minute_data_' + str(sat)]['speed'] = new_data['minute_data_' + str(sat)]['speed'][1:61]
         new_data['minute_data_' + str(sat)]['latitude'].append(
-            '{0:09.4f}'.format(gps_minute_file['lat'][60 + interval % 3600]))
+            '{0:09.4f}'.format(gps_minute_file['lat'][(60 + interval) % 3600]))
         new_data['minute_data_' + str(sat)]['latitude'] = new_data['minute_data_' + str(sat)]['latitude'][1:61]
         new_data['minute_data_' + str(sat)]['longitude'].append(
-            '{0:09.4f}'.format(gps_minute_file['lon'][60 + interval % 3600]))
+            '{0:09.4f}'.format(gps_minute_file['lon'][(60 + interval) % 3600]))
         new_data['minute_data_' + str(sat)]['longitude'] = new_data['minute_data_' + str(sat)]['longitude'][1:61]
 
         new_data['minute_data_' + str(sat)]['fuel'].append(data['minute_data_' + str(sat)]['fuel'][0])
@@ -671,10 +670,10 @@ def update_data(interval, data):
             new_data['hour_data_' + str(sat)]['speed'].append(data['hour_data_' + str(sat)]['speed'][0])
             new_data['hour_data_' + str(sat)]['speed'] = new_data['hour_data_' + str(sat)]['speed'][1:61]
             new_data['hour_data_' + str(sat)]['latitude'].append(
-                '{0:09.4f}'.format(gps_hour_file['lat'][(interval // 60000) % 60]))
+                '{0:09.4f}'.format(gps_hour_file['lat'][interval % 60]))
             new_data['hour_data_' + str(sat)]['latitude'] = new_data['hour_data_' + str(sat)]['latitude'][1:61]
             new_data['hour_data_' + str(sat)]['longitude'].append(
-                '{0:09.4f}'.format(gps_hour_file['lon'][(interval // 60000) % 60]))
+                '{0:09.4f}'.format(gps_hour_file['lon'][interval % 60]))
             new_data['hour_data_' + str(sat)]['longitude'] = new_data['hour_data_' + str(sat)]['longitude'][1:61]
             new_data['hour_data_' + str(sat)]['fuel'].append(data['hour_data_' + str(sat)]['fuel'][0])
             new_data['hour_data_' + str(sat)]['fuel'] = new_data['hour_data_' + str(sat)]['fuel'][1:61]
