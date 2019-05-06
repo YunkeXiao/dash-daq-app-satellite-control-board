@@ -71,6 +71,12 @@ body {
     letter-spacing: 0.1rem;
 }
 
+#satellite-dropdown-component{
+    color: #017e84;
+    text-align: center;
+    cursor: pointer;
+}
+
 .satellite-description {
     text-align: center;
 }

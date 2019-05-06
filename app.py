@@ -29,12 +29,7 @@ satellite_dropdown = dcc.Dropdown(
             'value': 'l12-5'
         },
     ],
-    clearable=False,
-    style={
-        'color': '#017e84',
-        'text-align': 'center',
-        'cursor': 'pointer'
-    }
+    clearable=False
 )
 
 satellite_dropdown_text = html.P(
