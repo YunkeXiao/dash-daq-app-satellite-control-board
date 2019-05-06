@@ -10,7 +10,7 @@ import dash_daq as daq
 
 app = dash.Dash(__name__)
 
-# This is for Heroku
+# This is for gunicorn
 server = app.server
 
 ##############################################################################################################
@@ -44,13 +44,13 @@ satellite_dropdown_text = html.P(
 
 satellite_title = html.H1(
     id='satellite-name',
-    children="")
+    children='')
 
 satellite_body = html.P(
     className='satellite-description',
     id='satellite-description',
     children=[
-        ""
+        ''
     ]
 )
 
@@ -195,7 +195,7 @@ utc = html.Div(
     children=[
         daq.LEDDisplay(
             id='control-panel-utc-component',
-            value="16:23",
+            value='16:23',
             label='Time',
             size=54,
             color='#017e84',
@@ -312,7 +312,7 @@ longitude = html.Div(
     children=[
         daq.LEDDisplay(
             id='control-panel-longitude-component',
-            value="0000.0000",
+            value='0000.0000',
             label='Longitude',
             size=24,
             color='#017e84',
@@ -329,7 +329,7 @@ latitude = html.Div(
     children=[
         daq.LEDDisplay(
             id='control-panel-latitude-component',
-            value="0050.9789",
+            value='0050.9789',
             label='Latitude',
             size=24,
             color='#017e84',
@@ -554,8 +554,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_h['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_h['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_h['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_h['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_h['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_h['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h['battery'][i] for i in range(0, 60)],
             },
@@ -563,8 +563,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_m['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_m['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_m['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_m['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_m['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_m['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_m['battery'][i] for i in range(0, 60)],
             },
@@ -572,8 +572,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_h_0['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h_0['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h_0['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_h_0['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_h_0['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_h_0['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_h_0['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_h_0['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h_0['battery'][i] for i in range(0, 60)],
             },
@@ -581,8 +581,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_m_0['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m_0['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m_0['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_m_0['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_m_0['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_m_0['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_m_0['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_m_0['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_m_0['battery'][i] for i in range(0, 60)],
             },
@@ -590,8 +590,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_h_1['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_h_1['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_h_1['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_h_1['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_h_1['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_h_1['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_h_1['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_h_1['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_h_1['battery'][i] for i in range(0, 60)],
             },
@@ -599,8 +599,8 @@ root_layout = html.Div(
                 'elevation': [df_non_gps_m_1['elevation'][i] for i in range(0, 60)],
                 'temperature': [df_non_gps_m_1['temperature'][i] for i in range(0, 60)],
                 'speed': [df_non_gps_m_1['speed'][i] for i in range(0, 60)],
-                'latitude': ["{0:09.4f}".format(df_gps_m_1['lat'][i]) for i in range(0, 60)],
-                'longitude': ["{0:09.4f}".format(df_gps_m_1['lon'][i]) for i in range(0, 60)],
+                'latitude': ['{0:09.4f}'.format(df_gps_m_1['lat'][i]) for i in range(0, 60)],
+                'longitude': ['{0:09.4f}'.format(df_gps_m_1['lon'][i]) for i in range(0, 60)],
                 'fuel': [df_non_gps_m_1['fuel'][i] for i in range(0, 60)],
                 'battery': [df_non_gps_m_1['battery'][i] for i in range(0, 60)],
             }
@@ -659,10 +659,10 @@ def update_data(interval, data):
         new_data['minute_data_' + str(sat)]['speed'].append(data['minute_data_' + str(sat)]['speed'][0])
         new_data['minute_data_' + str(sat)]['speed'] = new_data['minute_data_' + str(sat)]['speed'][1:61]
         new_data['minute_data_' + str(sat)]['latitude'].append(
-            "{0:09.4f}".format(gps_minute_file['lat'][60 + interval % 3600]))
+            '{0:09.4f}'.format(gps_minute_file['lat'][60 + interval % 3600]))
         new_data['minute_data_' + str(sat)]['latitude'] = new_data['minute_data_' + str(sat)]['latitude'][1:61]
         new_data['minute_data_' + str(sat)]['longitude'].append(
-            "{0:09.4f}".format(gps_minute_file['lon'][60 + interval % 3600]))
+            '{0:09.4f}'.format(gps_minute_file['lon'][60 + interval % 3600]))
         new_data['minute_data_' + str(sat)]['longitude'] = new_data['minute_data_' + str(sat)]['longitude'][1:61]
 
         new_data['minute_data_' + str(sat)]['fuel'].append(data['minute_data_' + str(sat)]['fuel'][0])
@@ -678,10 +678,10 @@ def update_data(interval, data):
             new_data['hour_data_' + str(sat)]['speed'].append(data['hour_data_' + str(sat)]['speed'][0])
             new_data['hour_data_' + str(sat)]['speed'] = new_data['hour_data_' + str(sat)]['speed'][1:61]
             new_data['hour_data_' + str(sat)]['latitude'].append(
-                "{0:09.4f}".format(gps_hour_file['lat'][(interval // 60000) % 60]))
+                '{0:09.4f}'.format(gps_hour_file['lat'][(interval // 60000) % 60]))
             new_data['hour_data_' + str(sat)]['latitude'] = new_data['hour_data_' + str(sat)]['latitude'][1:61]
             new_data['hour_data_' + str(sat)]['longitude'].append(
-                "{0:09.4f}".format(gps_hour_file['lon'][(interval // 60000) % 60]))
+                '{0:09.4f}'.format(gps_hour_file['lon'][(interval // 60000) % 60]))
             new_data['hour_data_' + str(sat)]['longitude'] = new_data['hour_data_' + str(sat)]['longitude'][1:61]
             new_data['hour_data_' + str(sat)]['fuel'].append(data['hour_data_' + str(sat)]['fuel'][0])
             new_data['hour_data_' + str(sat)]['fuel'] = new_data['hour_data_' + str(sat)]['fuel'][1:61]
@@ -931,24 +931,24 @@ def update_satellite_name(val):
 )
 def update_satellite_description(val):
     if val == 'h45-k1':
-        text = "H45-K1, also known as GPS IIR-9 and GPS SVN-45, is an American navigation satellite which forms part " \
-               "of the Global Positioning System. It was the ninth Block IIR GPS satellite to be launched, out of " \
-               "thirteen in the original configuration, and twenty one overall. It was built by Lockheed Martin, using " \
-               "the AS-4000 satellite bus. -168 was launched at 22:09:01 UTC on 31 March 2003, atop a Delta II carrier " \
-               "rocket, flight number D297, flying in the 7925-9.5 configuration. The launch took place from Space " \
-               "Launch Complex 17A at the Cape Canaveral Air Force Station, and placed H45-K1 into a transfer orbit. " \
-               "The satellite raised itself into medium Earth orbit using a Star-37FM apogee motor."
+        text = 'H45-K1, also known as GPS IIR-9 and GPS SVN-45, is an American navigation satellite which forms part ' \
+               'of the Global Positioning System. It was the ninth Block IIR GPS satellite to be launched, out of ' \
+               'thirteen in the original configuration, and twenty one overall. It was built by Lockheed Martin, using ' \
+               'the AS-4000 satellite bus. -168 was launched at 22:09:01 UTC on 31 March 2003, atop a Delta II carrier ' \
+               'rocket, flight number D297, flying in the 7925-9.5 configuration. The launch took place from Space ' \
+               'Launch Complex 17A at the Cape Canaveral Air Force Station, and placed H45-K1 into a transfer orbit. ' \
+               'The satellite raised itself into medium Earth orbit using a Star-37FM apogee motor.'
         return text
 
     elif val == 'l12-5':
-        text = "L12-5, also known as NRO Launch 22 or NROL-22, is an American signals intelligence satellite, " \
-               "operated by the National Reconnaissance Office. Launched in 2006, it has been identified as the first " \
-               "in a new series of satellites which are replacing the earlier Trumpet spacecraft. L12-5 was launched " \
-               "by Boeing, using a Delta IV carrier rocket flying in the Medium+(4,2) configuration. The rocket was the " \
-               "first Delta IV to launch from Vandenberg Air Force Base, flying from Space Launch Complex 6, a launch " \
-               "pad originally constructed as part of abandoned plans for manned launches from Vandenberg, originally " \
-               "using Titan rockets, and later Space Shuttles. The launch also marked the first launch of an Evolved " \
-               "Expendable Launch Vehicle from Vandenberg, and the first launch of an NRO payload on an EELV."
+        text = 'L12-5, also known as NRO Launch 22 or NROL-22, is an American signals intelligence satellite, ' \
+               'operated by the National Reconnaissance Office. Launched in 2006, it has been identified as the first ' \
+               'in a new series of satellites which are replacing the earlier Trumpet spacecraft. L12-5 was launched ' \
+               'by Boeing, using a Delta IV carrier rocket flying in the Medium+(4,2) configuration. The rocket was the ' \
+               'first Delta IV to launch from Vandenberg Air Force Base, flying from Space Launch Complex 6, a launch ' \
+               'pad originally constructed as part of abandoned plans for manned launches from Vandenberg, originally ' \
+               'using Titan rockets, and later Space Shuttles. The launch also marked the first launch of an Evolved ' \
+               'Expendable Launch Vehicle from Vandenberg, and the first launch of an NRO payload on an EELV.'
         return text
 
     else:
@@ -1019,8 +1019,7 @@ def update_time(interval):
      Output('control-panel-temperature-component', 'value'),
      Output('control-panel-speed-component', 'value'),
      Output('control-panel-fuel-component', 'value'),
-     Output('control-panel-battery-component', 'value'),
-     ],
+     Output('control-panel-battery-component', 'value')],
     [Input('interval', 'n_intervals'),
      Input('satellite-dropdown-component', 'value')],
     [State('store-data-config', 'data'),

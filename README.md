@@ -1,12 +1,12 @@
 # Dash-DAQ-Satellite-Dashboard
 
 ## Introduction
-A dash application that tracks satellites and displays live data captured by them.
+A Dash application that tracks satellites and displays live data captured by them.
 
 ### Satellite
 Artificial satellites are objects placed into orbit for various tasks, such as surveillance and transferring radio data 
-across the world. It's important to monitor satellites to insure that they can accomplish their jobs, so information such as
-its position and elevation are, for example, useful to determine whether or not a satellite is deviating from its original path
+across the world. It's important to monitor satellites to ensure that they can accomplish their jobs, so information such as
+their position and elevation are, for example, useful to determine whether or not a satellite is deviating from its original path
 due to unforeseen circumstances.
 
 ### dash-daq
@@ -18,7 +18,7 @@ acquisition and controls into your Dash applications.
 ## Requirements
 We suggest you to create a virtual environment for python3 to run this app. To do so, run:
 ```bash
-python3 -m virtualenv [your environment name]
+python3 python3 -m virtualenv [your environment name]
 ```
 ```bash
 source activate [your environment name]
