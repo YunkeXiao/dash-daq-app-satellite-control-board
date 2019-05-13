@@ -915,6 +915,9 @@ def update_satellite_name(val):
     [Input('satellite-dropdown-component', 'value')]
 )
 def update_satellite_description(val):
+
+    text = 'Select a satellite to view below.'
+
     if val == 'h45-k1':
         text = 'H45-K1, also known as GPS IIR-9 and GPS SVN-45, is an American navigation satellite which forms part ' \
                'of the Global Positioning System. It was the ninth Block IIR GPS satellite to be launched, out of ' \
@@ -923,7 +926,6 @@ def update_satellite_description(val):
                'rocket, flight number D297, flying in the 7925-9.5 configuration. The launch took place from Space ' \
                'Launch Complex 17A at the Cape Canaveral Air Force Station, and placed H45-K1 into a transfer orbit. ' \
                'The satellite raised itself into medium Earth orbit using a Star-37FM apogee motor.'
-        return text
 
     elif val == 'l12-5':
         text = 'L12-5, also known as NRO Launch 22 or NROL-22, is an American signals intelligence satellite, ' \
@@ -934,10 +936,7 @@ def update_satellite_description(val):
                'pad originally constructed as part of abandoned plans for manned launches from Vandenberg, originally ' \
                'using Titan rockets, and later Space Shuttles. The launch also marked the first launch of an Evolved ' \
                'Expendable Launch Vehicle from Vandenberg, and the first launch of an NRO payload on an EELV.'
-        return text
-
-    else:
-        return ''
+    return text
 
 
 ##############################################################################################################
