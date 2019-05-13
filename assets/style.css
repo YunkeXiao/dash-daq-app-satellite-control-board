@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display|Roboto');
 
 body {
-    background-color: #e8e3df;
+    background-color: #0f0f0f;
+    color: #f3f6fa;
     margin: 0;
     padding: 0;
     max-width: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
     letter-spacing: 0.025rem;
 }
 
@@ -26,25 +28,30 @@ body {
 #panel-side {
     display: flex;
     flex-direction: column;
-    background-color: #017e84;
+    background-color: #0f0f0f;
     position: relative;
     z-index: 5;
     width: 81%;
 }
 
-#satellite-dropdown {
+#satellite-dropdown .Select {
     background-color: white;
 }
-
+.Select-control {
+    background-color: #0f0f0f !important;
+    color: #f3f6fa !important;
+}
+.Select-control .Select-value-label {
+    color: #f3f6fa !important;
+}
 #satellite-dropdown-text {
-    padding: 3rem 0;
-    margin: 0;
-    color: #017e84;
-    background-color: white;
-    font-family: "Playfair Display", sans-serif;
-    font-size: 1.5rem;
-    width: 100%;
-    text-align: center;
+    padding: 5px;
+    margin-left: 40px;
+    color: #f3f6fa;
+    background-color: #0f0f0f;
+    font-family: "Open Sans", sans-serif;
+    font-size: 3rem;
+    width: calc(100% - 50px);
     font-weight: bold;
 }
 
@@ -54,8 +61,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 1px solid #f1f1f1;
-    background-color: #017e84;
+    background-color: #0f0f0f;
     color: white;
 }
 
@@ -64,21 +70,23 @@ body {
 }
 
 #satellite-name {
-    font-family: "Playfair Display", sans-serif;
+    font-family: "Open Sans", sans-serif;
     text-align: center;
-    font-size: 3rem;
+    font-size: 1.5rem;
     margin: -0.5rem 0 0 0;
     letter-spacing: 0.1rem;
 }
 
 #satellite-dropdown-component{
-    color: #017e84;
+    color: #0f0f0f;
     text-align: center;
     cursor: pointer;
 }
 
 .satellite-description {
-    text-align: center;
+    font-size: 10pt;
+    line-height: 12pt;
+
 }
 
 ._dash-undo-redo{
@@ -104,6 +112,7 @@ body {
 /**********************************************************************************************************************/
 
 #panel-upper {
+    margin-top: 10px;
     height: 350px;
     display: flex;
     flex-direction: row;
@@ -124,7 +133,10 @@ body {
     position: relative;
     overflow: hidden;
     z-index: 1;
-    border: 1px solid #f1f1f1;
+}
+
+#world-map > div > div > svg:nth-child(1) {
+    background: #0f0f0f !important;
 }
 
 /**********************************************************************************************************************/
@@ -140,8 +152,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    background-color: #e8e3df;
-    border-top: 1px solid #f1f1f1;
+    background-color: #0f0f0f;
     padding: 75px 0;
 }
 
@@ -151,11 +162,16 @@ body {
     width: 100%;
     margin-top: -40px;
     padding: 0 0 20px 0;
-    border-bottom: 1px solid #f1f1f1;
 }
 
 #control-panel-toggle-map {
-    margin: 0 37% 0 28%;
+    margin-left: 75px;
+    margin-right: 75px;
+}
+
+#control-panel-toggle-minute {
+    margin-left: 100px;
+    margin-right: 25px;
 }
 
 #panel-lower-0, #panel-lower-1 {
@@ -175,7 +191,9 @@ body {
 #control-panel-elevation, #control-panel-temperature, #control-panel-latitude, #control-panel-longitude,
 #control-panel-speed, #control-panel-fuel, #control-panel-battery {
     cursor: pointer;
+    color: #f3f6fa !important;
 }
+
 
 #control-panel-speed-component {
     margin-bottom: -35px;
@@ -183,6 +201,12 @@ body {
 
 #control-panel-latitude {
     margin-bottom: 15px;
+}
+
+#panel-lower > div {
+    width:80%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 #panel-lower-indicators {
@@ -215,7 +239,7 @@ body {
 }
 
 .hZlAvw .scale {
-    fill: #017e84 !important;
+    fill: #0f0f0f !important;
 }
 
 .hZlAvw .track {
@@ -223,7 +247,7 @@ body {
 }
 
 .hZlAvw .track.progress {
-    stroke: #017e84 !important;
+    stroke: #0f0f0f !important;
 }
 
 .coiBuO {

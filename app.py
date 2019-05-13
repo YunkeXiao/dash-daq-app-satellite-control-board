@@ -29,7 +29,8 @@ satellite_dropdown = dcc.Dropdown(
             'value': 'l12-5'
         },
     ],
-    clearable=False
+    clearable=False,
+    value='h45-k1'
 )
 
 satellite_dropdown_text = html.P(
@@ -62,7 +63,7 @@ side_panel_layout = html.Div(
                 satellite_body
             ]
         )
-    ],
+    ]
 )
 
 
@@ -88,8 +89,8 @@ map_data = [
         'mode': 'lines',
         'line': {
             'width': 2,
-            'color': '#017e84',
-        }
+            'color': '#707070'
+        },
     },
     {
         'type': 'scattergeo',
@@ -100,8 +101,8 @@ map_data = [
         'mode': 'markers',
         'marker': {
             'size': 10,
-            'color': 'black'
-        }
+            'color': '#ffe102'
+        },
     }
 ]
 
@@ -112,8 +113,8 @@ map_layout = {
         'showland': True,
         'showocean': True,
         'resolution': 100,
-        'landcolor': 'white',
-        'oceancolor': '#e8e3df',
+        'landcolor': '#303030',
+        'oceancolor': '#0f0f0f',
         'scope': 'world',
         'showgrid': True,
 
@@ -147,7 +148,7 @@ histogram = dcc.Graph(
             'y': [i for i in range(60)],
             'type': 'scatter',
             'marker': {
-                'color': 'white',
+                'color': '#ffe102'
             }
         }],
         'layout': {
@@ -167,8 +168,8 @@ histogram = dcc.Graph(
             'yaxis': {
                 'gridcolor': '#999999',
             },
-            'plot_bgcolor': '#017e84',
-            'paper_bgcolor': '#017e84',
+            'plot_bgcolor': '#0f0f0f',
+            'paper_bgcolor': '#0f0f0f',
             'font': {
                 'color': 'white'
             },
@@ -190,11 +191,8 @@ utc = html.Div(
             id='control-panel-utc-component',
             value='16:23',
             label='Time',
-            size=54,
-            color='#017e84',
-            style={
-                'color': '#black'
-            }
+            size=50,
+            color='#ffe102',
         )
     ],
     n_clicks=0
@@ -210,11 +208,9 @@ speed = html.Div(
             max=40,
             showCurrentValue=True,
             value=27.859,
+            size=200,
             units='1000km/h',
-            color='#017e84',
-            style={
-                'color': 'black'
-            }
+            color='#ffe102'
         )
     ],
     n_clicks=0
@@ -231,10 +227,7 @@ elevation = html.Div(
             value=650,
             units='kilometers',
             showCurrentValue=True,
-            color='#017e84',
-            style={
-                'color': '#black'
-            }
+            color='#303030'
         )
     ],
     n_clicks=0
@@ -251,10 +244,7 @@ temperature = html.Div(
             value=290,
             units='Kelvin',
             showCurrentValue=True,
-            color='#017e84',
-            style={
-                'color': '#black'
-            }
+            color='#303030'
         )
     ],
     n_clicks=0
@@ -265,16 +255,13 @@ fuel_indicator = html.Div(
     children=[
         daq.GraduatedBar(
             id='control-panel-fuel-component',
-            label='Fuel-Level',
+            label='Fuel Level',
             min=0,
             max=100,
             value=76,
             step=1,
             showCurrentValue=True,
-            color='#017e84',
-            style={
-                'color': '#black'
-            }
+            color='#303030',
         )
     ],
     n_clicks=0
@@ -291,10 +278,7 @@ battery_indicator = html.Div(
             value=85,
             step=1,
             showCurrentValue=True,
-            color='#017e84',
-            style={
-                'color': '#black'
-            }
+            color='#303030',
         )
     ],
     n_clicks=0
@@ -308,7 +292,7 @@ longitude = html.Div(
             value='0000.0000',
             label='Longitude',
             size=24,
-            color='#017e84',
+            color='#ffe102',
             style={
                 'color': '#black'
             }
@@ -325,7 +309,7 @@ latitude = html.Div(
             value='0050.9789',
             label='Latitude',
             size=24,
-            color='#017e84',
+            color='#ffe102',
             style={
                 'color': '#black'
             }
@@ -340,7 +324,7 @@ solar_panel_0 = daq.Indicator(
     label='Solar-Panel-0',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -352,7 +336,7 @@ solar_panel_1 = daq.Indicator(
     label='Solar-Panel-1',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -364,7 +348,7 @@ camera = daq.Indicator(
     label='Camera',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -376,7 +360,7 @@ thrusters = daq.Indicator(
     label='Thrusters',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -388,7 +372,7 @@ motor = daq.Indicator(
     label='Motor',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -400,7 +384,7 @@ communication_signal = daq.Indicator(
     label='Signal',
     labelPosition='bottom',
     value=True,
-    color='#017e84',
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -409,8 +393,8 @@ communication_signal = daq.Indicator(
 map_toggle = daq.ToggleSwitch(
     id='control-panel-toggle-map',
     value=True,
-    label='Show Satellite Path',
-    color='#017e84',
+    label=['Hide path', 'Show path'],
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -419,8 +403,8 @@ map_toggle = daq.ToggleSwitch(
 minute_toggle = daq.ToggleSwitch(
     id='control-panel-toggle-minute',
     value=True,
-    label='Past Hour - Past Minute',
-    color='#017e84',
+    label=['Past Hour', 'Past Minute'],
+    color='#ffe102',
     style={
         'color': '#black'
     }
@@ -446,7 +430,7 @@ main_panel_layout = html.Div(
         ),
         html.Div(
             id='panel-lower',
-            children=[
+            children=[daq.DarkThemeProvider(theme={'dark': True}, children=[
                 html.Div(
                     id='panel-lower-top-break',
                     children=[
@@ -508,7 +492,7 @@ main_panel_layout = html.Div(
                         ),
                     ]
                 ),
-            ]
+            ])]
         )
     ],
 )
@@ -825,7 +809,7 @@ def update_graph(interval, satellite_type, minute_mode,
             'y': [i for i in range(60)],
             'type': 'scatter',
             'marker': {
-                'color': 'white',
+                'color': '#ffe102'
             }
         }],
         'layout': {
@@ -845,8 +829,8 @@ def update_graph(interval, satellite_type, minute_mode,
             'yaxis': {
                 'gridcolor': '#999999',
             },
-            'plot_bgcolor': '#017e84',
-            'paper_bgcolor': '#017e84',
+            'plot_bgcolor': '#0f0f0f',
+            'paper_bgcolor': '#0f0f0f',
             'font': {
                 'color': 'white'
             }
@@ -887,6 +871,9 @@ def update_graph(interval, satellite_type, minute_mode,
         if info_type in ['elevation', 'temperature', 'speed', 'latitude', 'longitude', 'fuel', 'battery']:
             set_y_range(info_type)
             update_graph_data(info_type)
+        else:
+            set_y_range('elevation')
+            update_graph_data('elevation')
         return [figure, new_data_config]
     # Update store-data-config['info_type']
     new_data_config['info_type'] = info_type
@@ -1073,7 +1060,7 @@ def update_gps_color(clicks, satellite_type, data_config, data):
         if value < 0:
             new_data.append('#ff8e77')
         else:
-            new_data.append('#017e84')
+            new_data.append('#ffe102')
 
     return new_data
 
